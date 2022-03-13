@@ -19,3 +19,13 @@ Se debe crear un archivo `.env` en el directorio raiz del proyecto y configurar 
 - `MONGODB_URI`: URI de conexión a la base de datos MongoDB que se utiliza.
 
 Puede seguirse el ejemplo mostrado en `.env.example`.
+
+### Ejecutar la aplicación
+
+Es necesario tener configuradas las variables de entorno en `.env` y tener activado el servicio de MongoDB.
+
+La aplicación se ejecuta mediante el siguiente comando, desde el directorio raiz del proyecto:
+
+```
+deno run --config ./tsconfig.ts --allow-net --allow-env --allow-read --unstable ./src/app.ts
+```
