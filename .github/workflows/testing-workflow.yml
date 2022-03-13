@@ -1,4 +1,4 @@
-name: Muevete API Workflow
+name: Testing Workflow
 
 on:
   push:
