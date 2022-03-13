@@ -4,8 +4,17 @@ import { Component, MongoClient, Database, Collection } from "../../deps.ts";
 export class DBManagement {
     public async connect(): Promise<Database> {
         const client = new MongoClient();
-        await client.connect("mongodb://127.0.0.1:27017");
-        return client.database("muevete");
+        
+        const MONGODB_URI = Deno.env.get("MONGODB_URI");
+        if (!MONGODB_URI) throw new Error("La variable de entorno MONGODB_URI no está configurada");
+        
+        try {
+            await client.connect(MONGODB_URI);
+            return client.database("muevete");
+        } catch (err) {
+            console.error("Error de conexión a MongoDB", err);
+            throw err;
+        }
     }
 
     public getCollection(name: string, db: Database): Collection<any> {
