@@ -3,7 +3,7 @@ name: Develop Task Workflow
 on:
   push:
     branches:
-      - "t0"
+      - "t0**"
 
 jobs:
   linter:
