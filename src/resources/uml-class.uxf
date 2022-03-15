@@ -1,0 +1,68 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>140</x><y>87</y><w>190</w><h>130</h></coordinates><panel_attributes>Evento
+--
+nombre: string
+descripcion: string
+objetivoKm: integer
+fechaCreacion: date
+fechaInicio: date
+fechaFin: date
+modalidades: [Modalidad]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>160</x><y>317</y><w>150</w><h>70</h></coordinates><panel_attributes>Dorsal
+--
+id: integer
+num: integer
+lema: string</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>160</x><y>487</y><w>150</w><h>90</h></coordinates><panel_attributes>Esfuerzo
+--
+numKm: double
+fecha: date
+comentario: string
+modalidad: Modalidad</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>750</x><y>307</y><w>150</w><h>120</h></coordinates><panel_attributes>Artículo
+--
+titulo: string
+subtítulo: string
+fecha: date
+cuerpo: string
+categoria: string
+referencia: string</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>600</x><y>507</y><w>150</w><h>70</h></coordinates><panel_attributes>Newsletter
+--
+id: integer
+titulo: string
+fecha: date</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>450</x><y>307</y><w>150</w><h>90</h></coordinates><panel_attributes>Usuario
+--
+id: integer
+username: string
+password: string
+rol: Rol</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>450</x><y>87</y><w>150</w><h>120</h></coordinates><panel_attributes>/Persona/
+--
+nombre: string
+apellidos: string
+fechaNacimiento: date
+email: string
+telefono: string
+ciudad: string</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>750</x><y>90</y><w>150</w><h>70</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
+Rol
+--
+Admin
+Voluntario</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>750</x><y>170</y><w>150</w><h>100</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
+Modalidad
+--
+Caminata
+Carrera
+Bicicleta
+Natacion</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>520</x><y>200</y><w>30</w><h>130</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>220</x><y>210</y><w>80</w><h>130</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=*
+inscrito &gt;</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>340</y><w>170</w><h>50</h></coordinates><panel_attributes>lt=-
+m1=*
+m2=1
+pertenece &gt;</panel_attributes><additional_attributes>10;20;150;20</additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>390</y><w>260</w><h>180</h></coordinates><panel_attributes>lt=-
+m1=*
+m2=1
+esRealizado &gt;</panel_attributes><additional_attributes>10;150;230;150;230;10</additional_attributes></element><element><id>Relation</id><coordinates><x>220</x><y>380</y><w>90</w><h>130</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=*
+asignado &gt;</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>590</x><y>340</y><w>180</w><h>50</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=*
+&lt; publicadoPor</panel_attributes><additional_attributes>10;20;160;20</additional_attributes></element><element><id>Relation</id><coordinates><x>740</x><y>420</y><w>110</w><h>150</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
+
+</panel_attributes><additional_attributes>10;120;90;120;90;10</additional_attributes></element></diagram>

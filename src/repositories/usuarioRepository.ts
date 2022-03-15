@@ -1,6 +1,6 @@
 import { Component, Bson, Database, Collection } from "../../deps.ts";
 import { DBManagement } from "../database/mongodb.ts";
-import { Usuario } from "../models/usuario.ts";
+import { Usuario } from "../models/models.ts";
 
 @Component()
 export class UsuarioRepository {
@@ -25,6 +25,12 @@ export class UsuarioRepository {
     public async getUsuario(id: Bson.ObjectID): Promise<Usuario> {
         const usuario = await this.usuarios.findOne({"_id": id});
         if (!usuario) throw new Error("Usuario no encontrado");
+        return usuario;
+    }
+
+    public async getUsuarioByUsername(username: string): Promise<Usuario | number> {
+        const usuario = await this.usuarios.findOne({"username": username});
+        if (!usuario) return 0;
         return usuario;
     }
 
