@@ -19,4 +19,5 @@ export { Collection } from "https://deno.land/x/mongo@v0.23.0/src/collection/mod
 
 // Dependencias de testing
 export { Rhum } from "https://deno.land/x/rhum@v1.1.13/mod.ts";
+export type { Stubbed } from "https://deno.land/x/rhum@v1.1.13/mod.ts";
 export * as asserts from "https://deno.land/std@0.106.0/testing/asserts.ts";

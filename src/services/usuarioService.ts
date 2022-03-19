@@ -31,7 +31,7 @@ export class UsuarioService {
         }
     }
     
-    public async updateUsuario(id: string, payload: Object) {
+    public async updateUsuario<T extends Object>(id: string, payload: T) {
         return await this.usuarioRepository.updateUsuario(new Bson.ObjectId(id), payload);
     }
 

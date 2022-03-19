@@ -1,3 +1,5 @@
+// deno-lint-ignore-file
+
 import { MandarineCore } from "../deps.ts";
 import * as Controllers from "./controllers/controllers.ts";
 import * as Services from "./services/services.ts";

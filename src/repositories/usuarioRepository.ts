@@ -4,8 +4,8 @@ import { Usuario } from "../models/models.ts";
 
 @Component()
 export class UsuarioRepository {
-    private db: Database | any;
-    private usuarios: Collection<Usuario> | any;
+    private db!: Database;
+    private usuarios!: Collection<Usuario>;
 
     constructor(private readonly storage: DBManagement) {
         this.init();
@@ -39,11 +39,11 @@ export class UsuarioRepository {
         if (!res) throw new Error("Error en la creación del usuario");
     }
 
-    public async updateUsuario(id: Bson.ObjectID, payload: Object) {
-        const response = await this.usuarios.updateOne({"_id": id}, {$set: payload});
+    public async updateUsuario<T extends Object>(id: Bson.ObjectID, payload: T) {
+        await this.usuarios.updateOne({"_id": id}, {$set: payload});
     }
 
     public async deleteUsuario(id: Bson.ObjectID) {
-        const usuario = await this.usuarios.deleteOne({"_id": id});
+        await this.usuarios.deleteOne({"_id": id});
     }
 }

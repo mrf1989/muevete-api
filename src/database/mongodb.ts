@@ -1,3 +1,5 @@
+// deno-lint-ignore-file no-explicit-any
+
 import { Component, MongoClient, Database, Collection } from "../../deps.ts";
 
 @Component()
@@ -17,7 +19,7 @@ export class DBManagement {
         }
     }
 
-    public getCollection(name: string, db: Database): Collection<any> {
-        return db.collection<any>(name);
+    public getCollection<T>(name: string, db: Database): Collection<T> {
+        return db.collection<T>(name);
     }
 }

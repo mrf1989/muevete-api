@@ -1,13 +1,13 @@
-import { asserts, Rhum } from "../../deps.ts";
+import { asserts, Rhum, Stubbed } from "../../deps.ts";
 import { DBManagement } from "../../src/database/mongodb.ts";
 import { UsuarioRepository } from "../../src/repositories/repositories.ts";
 import { UsuarioService } from "../../src/services/services.ts";
 
 Rhum.testPlan("Testing Usuario Service", () => {
     Rhum.testSuite("Testing autenticación de usuarios", () => {
-        let dbManagement: any;
-        let usuarioRepository: any;
-        let user = {
+        let dbManagement: Stubbed<DBManagement>;
+        let usuarioRepository: Stubbed<UsuarioRepository>;
+        const user = {
             username: "mruano",
             password: "12345",
             rol: "admin",
