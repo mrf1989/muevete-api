@@ -4,8 +4,8 @@ import { Evento } from "../models/evento.ts";
 
 @Component()
 export class EventoRepository {
-    private db: Database | any;
-    private eventos: Collection<Evento> | any;
+    private db!: Database;
+    private eventos!: Collection<Evento>;
 
     constructor(private readonly storage: DBManagement) {
         this.init();
@@ -33,11 +33,11 @@ export class EventoRepository {
         if (!res) throw new Error("Error en la creación del evento");
     }
 
-    public async updateEvento(id: Bson.ObjectID, payload: Object) {
-        const response = await this.eventos.updateOne({"_id": id}, {$set: payload});
+    public async updateEvento<T extends Evento>(id: Bson.ObjectID, payload: T) {
+        await this.eventos.updateOne({"_id": id}, {$set: payload});
     }
 
     public async deleteEvento(id: Bson.ObjectID) {
-        const evento = await this.eventos.deleteOne({"_id": id});
+        await this.eventos.deleteOne({"_id": id});
     }
 }

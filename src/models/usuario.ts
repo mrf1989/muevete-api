@@ -1,15 +1,15 @@
 import { Bson } from "../../deps.ts";
-import { Rol } from "./rol.ts";
+import { Rol } from "./models.ts";
 
 export interface Usuario {
-    _id: Bson.ObjectID;
+    _id?: Bson.ObjectID;
     username: string;
     password: string;
-    rol: Rol;
+    rol: Rol | string;
     nombre: string;
     apellidos: string;
     fechaNacimiento: Date;
     email: string;
-    telefono: string;
-    ciudad: string;
+    telefono?: string;
+    ciudad?: string;
 }

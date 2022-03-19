@@ -14,12 +14,12 @@ export class EventoService {
         return await this.eventoRepository.getEvento(new Bson.ObjectId(id));
     }
 
-    public async createEvento(payload: Object) {
+    public async createEvento(payload: Evento) {
         const evento: Evento = payload as Evento;
         await this.eventoRepository.createEvento(evento);
     }
     
-    public async updateEvento(id: string, payload: Object) {
+    public async updateEvento<T extends Evento>(id: string, payload: T) {
         return await this.eventoRepository.updateEvento(new Bson.ObjectId(id), payload);
     }
 
