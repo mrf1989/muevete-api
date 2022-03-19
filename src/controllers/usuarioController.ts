@@ -1,4 +1,4 @@
-import { Controller, GET, PUT, POST, DELETE, RouteParam, RequestBody } from "../../deps.ts";
+import { Controller, GET, PUT, POST, DELETE, RouteParam, RequestBody, ResponseStatus, Mandarine } from "../../deps.ts";
 import { UsuarioService } from "../services/usuarioService.ts";
 import { Usuario } from "../models/models.ts";
 
@@ -30,5 +30,11 @@ export class UsuarioController {
     @DELETE("/usuarios/:id")
     public async deleteUsuario(@RouteParam("id") id: string) {
         await this.usuarioService.deleteUsuario(id);
+    }
+
+    @POST("/usuarios/login")
+    @ResponseStatus(Mandarine.MandarineMVC.HttpStatusCode.OK)
+    public async loginUsuario(@RequestBody() payload: { username: string, password: string }) {
+        await this.usuarioService.loginUsuario(payload);
     }
 }
