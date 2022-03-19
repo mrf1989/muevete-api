@@ -7,7 +7,7 @@ Rhum.testPlan("Testing Usuario Service", () => {
     Rhum.testSuite("Testing autenticación de usuarios", () => {
         let dbManagement: Stubbed<DBManagement>;
         let usuarioRepository: Stubbed<UsuarioRepository>;
-        const user = {
+        let user = {
             username: "mruano",
             password: "12345",
             rol: "admin",
@@ -43,7 +43,7 @@ Rhum.testPlan("Testing Usuario Service", () => {
 
         Rhum.testCase("Permite crear un usuario", async () => {
             usuarioRepository.stub("getUsuarioByUsername", () => {
-                return 0;
+                throw new Error(`${user.username} no existe`);
             });
 
             usuarioRepository.stub("createUsuario", () => {
@@ -53,6 +53,21 @@ Rhum.testPlan("Testing Usuario Service", () => {
             const usuarioService = new UsuarioService(usuarioRepository);
             const res = await usuarioService.createUsuario(user);
             asserts.assertEquals(res, true);
+        });
+
+        Rhum.testCase("Autenticación de usuario", async () => {
+            usuarioRepository.stub("getUsuarioByUsername", () => {
+                let hashUsuario = user;
+                hashUsuario.password = "7d4e3eec80026719639ed4dba68916eb94c7a49a053e05c8f9578fe4e5a3d7ea";
+                return hashUsuario;
+            });
+
+            const usuarioService = new UsuarioService(usuarioRepository);
+            const correcto = await usuarioService.loginUsuario({ username: "mruano", password: "12345" });
+            asserts.assertEquals(correcto, true);
+            asserts.assertThrowsAsync(async () => {
+                await usuarioService.loginUsuario({ username: "mruano", password: "123123" });
+            }, Error, "El usuario o la contraseña introducidos no son correctos");
         });
     });
 });

@@ -28,9 +28,9 @@ export class UsuarioRepository {
         return usuario;
     }
 
-    public async getUsuarioByUsername(username: string): Promise<Usuario | number> {
+    public async getUsuarioByUsername(username: string): Promise<Usuario> {
         const usuario = await this.usuarios.findOne({"username": username});
-        if (!usuario) return 0;
+        if (!usuario) throw new Error(`${username} no existe`);
         return usuario;
     }
 
