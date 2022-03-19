@@ -57,7 +57,7 @@ export class UsuarioService {
         try {
             await this.usuarioRepository.getUsuarioByUsername(username);
             return true;
-        } catch (err) {
+        } catch (_err) {
             return false;
         }
     }

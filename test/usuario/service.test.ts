@@ -7,7 +7,7 @@ Rhum.testPlan("Testing Usuario Service", () => {
     Rhum.testSuite("Testing autenticación de usuarios", () => {
         let dbManagement: Stubbed<DBManagement>;
         let usuarioRepository: Stubbed<UsuarioRepository>;
-        let user = {
+        const user = {
             username: "mruano",
             password: "12345",
             rol: "admin",
@@ -57,7 +57,7 @@ Rhum.testPlan("Testing Usuario Service", () => {
 
         Rhum.testCase("Autenticación de usuario", async () => {
             usuarioRepository.stub("getUsuarioByUsername", () => {
-                let hashUsuario = user;
+                const hashUsuario = user;
                 hashUsuario.password = "7d4e3eec80026719639ed4dba68916eb94c7a49a053e05c8f9578fe4e5a3d7ea";
                 return hashUsuario;
             });
