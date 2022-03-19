@@ -2,7 +2,7 @@ import { asserts, Bson, Rhum, Stubbed } from "../../deps.ts";
 import { DBManagement } from "../../src/database/mongodb.ts";
 import { UsuarioRepository } from "../../src/repositories/repositories.ts";
 import { UsuarioService } from "../../src/services/services.ts";
-import { Usuario } from "../../src/models/usuario.ts";
+import { Usuario } from "../../src/models/models.ts";
 
 Rhum.testPlan("Testing Usuario Service", () => {
     let dbManagement: Stubbed<DBManagement>;
@@ -64,7 +64,7 @@ Rhum.testPlan("Testing Usuario Service", () => {
     
             usuarioRepository.stub("createUsuario", () => {
                 return true;
-            })
+            });
     
             const usuarioService = new UsuarioService(usuarioRepository);
             const res = await usuarioService.createUsuario(user);

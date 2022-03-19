@@ -1,8 +1,8 @@
 import { Controller, GET, PUT, POST, DELETE, RouteParam, RequestBody } from "../../deps.ts";
-import { EventoService } from "../services/eventoService.ts";
+import { EventoService } from "../services/services.ts";
 import { Evento } from "../models/evento.ts";
 
-@Controller()
+@Controller("/api")
 export class EventoController {
     constructor(private readonly eventoService: EventoService) {}
 

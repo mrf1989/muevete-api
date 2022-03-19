@@ -1,6 +1,6 @@
 import { Component, Bson, Database, Collection } from "../../deps.ts";
 import { DBManagement } from "../database/mongodb.ts";
-import { Evento } from "../models/evento.ts";
+import { Evento } from "../models/models.ts";
 
 @Component()
 export class EventoRepository {

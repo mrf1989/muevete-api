@@ -1,5 +1,5 @@
 import { Bson } from "../../deps.ts";
-import { Modalidad } from "./modalidad.ts";
+import { Modalidad } from "./models.ts";
 
 export interface Evento {
     _id?: Bson.ObjectID;
