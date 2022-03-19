@@ -1,6 +1,6 @@
 export enum Modalidad {
-    Caminata,
-    Carrera,
-    Bicicleta,
-    Natacion
+    Caminata = "caminata",
+    Carrera = "carrera",
+    Bicicleta = "bicicleta",
+    Natacion = "natacion"
 }
