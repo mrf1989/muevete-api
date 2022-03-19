@@ -6,7 +6,7 @@ import { Usuario } from "../../src/models/models.ts";
 
 Rhum.testPlan("Testing Usuario Service", () => {
     let dbManagement: Stubbed<DBManagement>;
-    const user = {
+    const user: Usuario = {
         _id: new Bson.ObjectID("62358b4fac70f4b258326c48"),
         username: "mruano",
         password: "12345",
@@ -90,7 +90,11 @@ Rhum.testPlan("Testing Usuario Service", () => {
             usuarioRepository.stub("updateUsuario", async () => {});
     
             const usuarioService = new UsuarioService(usuarioRepository);
-            const res = await usuarioService.updateUsuario(user._id.id, {apellidos: "Ruano", ciudad: "Chipiona"} as Usuario);
+            let res = false;
+
+            if (user._id) {
+                res = await usuarioService.updateUsuario(user._id.id, {apellidos: "Ruano", ciudad: "Chipiona"} as Usuario);
+            }
             
             asserts.assertEquals(res, true);
         });
@@ -103,7 +107,7 @@ Rhum.testPlan("Testing Usuario Service", () => {
             const usuarioService = new UsuarioService(usuarioRepository);
             
             asserts.assertThrowsAsync(async () => {
-                await usuarioService.updateUsuario(user._id.id, {apellidos: "Ruano", ciudad: "Chipiona"} as Usuario);
+                if (user._id) await usuarioService.updateUsuario(user._id.id, {apellidos: "Ruano", ciudad: "Chipiona"} as Usuario);
             });
         });
     });

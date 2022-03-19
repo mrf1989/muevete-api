@@ -6,7 +6,7 @@ import { Evento } from "../../src/models/models.ts";
 
 Rhum.testPlan("Testing Evento Service", () => {
     let dbManagement: Stubbed<DBManagement>;
-    const evento = {
+    const evento: Evento = {
         _id: new Bson.ObjectID("6235d572c077516a2dffa8ff"),
         nombre: "Caminar para vencer",
         descripcion: "Descripción de la actividad deportiva y de la enfermedad contra la que se lucha",
