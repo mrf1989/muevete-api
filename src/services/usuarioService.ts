@@ -11,7 +11,11 @@ export class UsuarioService {
     }
 
     public async getUsuario(id: string) {
-        return await this.usuarioRepository.getUsuario(new Bson.ObjectId(id));
+        try {
+            return await this.usuarioRepository.getUsuario(new Bson.ObjectId(id));
+        } catch (err) {
+            throw err;
+        }
     }
 
     public async createUsuario(payload: Usuario): Promise<boolean> {
@@ -32,8 +36,14 @@ export class UsuarioService {
         }
     }
     
-    public async updateUsuario<T extends Usuario>(id: string, payload: T) {
-        return await this.usuarioRepository.updateUsuario(new Bson.ObjectId(id), payload);
+    public async updateUsuario<T extends Usuario>(id: string, payload: T): Promise<boolean> {
+        try {
+            const usuario = await this.getUsuario(id);
+            await this.usuarioRepository.updateUsuario(usuario._id as Bson.ObjectID, payload);
+            return true;
+        } catch (err) {
+            throw err;
+        }
     }
 
     public async deleteUsuario(id: string) {

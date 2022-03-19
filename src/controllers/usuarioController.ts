@@ -1,4 +1,4 @@
-import { Controller, GET, PUT, POST, DELETE, RouteParam, RequestBody, ResponseStatus, Mandarine } from "../../deps.ts";
+import { Controller, GET, PUT, POST, DELETE, RouteParam, RequestBody } from "../../deps.ts";
 import { UsuarioService } from "../services/usuarioService.ts";
 import { Usuario } from "../models/models.ts";
 
@@ -18,7 +18,11 @@ export class UsuarioController {
 
     @PUT("/usuarios/:id")
     public async updateUsuario<T extends Usuario>(@RouteParam("id") id: string, @RequestBody() payload: T) {
-        await this.usuarioService.updateUsuario(id, payload);
+        try {
+            await this.usuarioService.updateUsuario(id, payload);
+        } catch (err) {
+            throw err;
+        }
     }
 
     @POST("/usuarios")
@@ -33,7 +37,6 @@ export class UsuarioController {
     }
 
     @POST("/usuarios/login")
-    @ResponseStatus(Mandarine.MandarineMVC.HttpStatusCode.OK)
     public async loginUsuario(@RequestBody() payload: { username: string, password: string }) {
         await this.usuarioService.loginUsuario(payload);
     }

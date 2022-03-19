@@ -1,14 +1,14 @@
 {
     "compilerOptions": {
       //"strict": false,
-      "noImplicitAny": true,
       //"noImplicitThis": false,
       //"alwaysStrict": false,
       //"strictNullChecks": false,
       //"strictFunctionTypes": true,
       //"strictPropertyInitialization": false,
+      //"allowUmdGlobalAccess": false
+      "noImplicitAny": true,
       "experimentalDecorators": true,
       "emitDecoratorMetadata": true,
-      //"allowUmdGlobalAccess": false
     }
   }
