@@ -39,7 +39,7 @@ export class UsuarioRepository {
         if (!res) throw new Error("Error en la creación del usuario");
     }
 
-    public async updateUsuario<T extends Object>(id: Bson.ObjectID, payload: T) {
+    public async updateUsuario<T extends Usuario>(id: Bson.ObjectID, payload: T) {
         await this.usuarios.updateOne({"_id": id}, {$set: payload});
     }
 

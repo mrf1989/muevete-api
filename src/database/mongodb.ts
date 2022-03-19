@@ -1,5 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
-
 import { Component, MongoClient, Database, Collection } from "../../deps.ts";
 
 @Component()

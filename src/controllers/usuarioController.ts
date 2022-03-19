@@ -17,7 +17,7 @@ export class UsuarioController {
     }
 
     @PUT("/usuarios/:id")
-    public async updateUsuario<T extends Object>(@RouteParam("id") id: string, @RequestBody() payload: T) {
+    public async updateUsuario<T extends Usuario>(@RouteParam("id") id: string, @RequestBody() payload: T) {
         await this.usuarioService.updateUsuario(id, payload);
     }
 

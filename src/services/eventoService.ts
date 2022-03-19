@@ -19,7 +19,7 @@ export class EventoService {
         await this.eventoRepository.createEvento(evento);
     }
     
-    public async updateEvento<T extends Object>(id: string, payload: T) {
+    public async updateEvento<T extends Evento>(id: string, payload: T) {
         return await this.eventoRepository.updateEvento(new Bson.ObjectId(id), payload);
     }
 

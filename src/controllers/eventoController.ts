@@ -17,7 +17,7 @@ export class EventoController {
     }
 
     @PUT("/eventos/:id")
-    public async updateEvento<T extends Object>(@RouteParam("id") id: string, @RequestBody() payload: T) {
+    public async updateEvento<T extends Evento>(@RouteParam("id") id: string, @RequestBody() payload: T) {
         await this.eventoService.updateEvento(id, payload);
     }
 

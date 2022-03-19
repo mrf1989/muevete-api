@@ -33,7 +33,7 @@ export class EventoRepository {
         if (!res) throw new Error("Error en la creación del evento");
     }
 
-    public async updateEvento<T extends Object>(id: Bson.ObjectID, payload: T) {
+    public async updateEvento<T extends Evento>(id: Bson.ObjectID, payload: T) {
         await this.eventos.updateOne({"_id": id}, {$set: payload});
     }
 
