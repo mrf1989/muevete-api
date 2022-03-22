@@ -1,11 +1,11 @@
 import { Component, Bson, Database, Collection } from "../../deps.ts";
 import { DBManagement } from "../database/mongodb.ts";
-import { Usuario } from "../models/usuario.ts";
+import { Usuario } from "../models/models.ts";
 
 @Component()
 export class UsuarioRepository {
-    private db: Database | any;
-    private usuarios: Collection<Usuario> | any;
+    private db!: Database;
+    private usuarios!: Collection<Usuario>;
 
     constructor(private readonly storage: DBManagement) {
         this.init();
@@ -28,16 +28,22 @@ export class UsuarioRepository {
         return usuario;
     }
 
+    public async getUsuarioByUsername(username: string): Promise<Usuario> {
+        const usuario = await this.usuarios.findOne({"username": username});
+        if (!usuario) throw new Error(`${username} no existe`);
+        return usuario;
+    }
+
     public async createUsuario(usuario: Usuario) {
         const res = await this.usuarios.insertOne(usuario);
         if (!res) throw new Error("Error en la creación del usuario");
     }
 
-    public async updateUsuario(id: Bson.ObjectID, payload: Object) {
-        const response = await this.usuarios.updateOne({"_id": id}, {$set: payload});
+    public async updateUsuario<T extends Usuario>(id: Bson.ObjectID, payload: T) {
+        await this.usuarios.updateOne({"_id": id}, {$set: payload});
     }
 
     public async deleteUsuario(id: Bson.ObjectID) {
-        const usuario = await this.usuarios.deleteOne({"_id": id});
+        await this.usuarios.deleteOne({"_id": id});
     }
 }

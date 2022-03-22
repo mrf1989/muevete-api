@@ -17,7 +17,7 @@ export class DBManagement {
         }
     }
 
-    public getCollection(name: string, db: Database): Collection<any> {
-        return db.collection<any>(name);
+    public getCollection<T>(name: string, db: Database): Collection<T> {
+        return db.collection<T>(name);
     }
 }

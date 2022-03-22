@@ -1,6 +1,6 @@
 import { Service, Bson } from "../../deps.ts";
-import { EventoRepository } from "../repositories/eventoRepository.ts";
-import { Evento } from "../models/evento.ts";
+import { EventoRepository } from "../repositories/repositories.ts";
+import { Evento } from "../models/models.ts";
 
 @Service()
 export class EventoService {
@@ -14,16 +14,29 @@ export class EventoService {
         return await this.eventoRepository.getEvento(new Bson.ObjectId(id));
     }
 
-    public async createEvento(payload: Object) {
+    public async createEvento(payload: Evento): Promise<boolean> {
         const evento: Evento = payload as Evento;
-        await this.eventoRepository.createEvento(evento);
+        const duracionMinima = this.duracionMinima(evento.fechaInicio, evento.fechaFin);
+        if (duracionMinima) {
+            await this.eventoRepository.createEvento(evento);
+            return true;
+        } else {
+            throw new Error("El evento debe durar un mínimo de 7 días");
+        }
     }
     
-    public async updateEvento(id: string, payload: Object) {
+    public async updateEvento<T extends Evento>(id: string, payload: T) {
         return await this.eventoRepository.updateEvento(new Bson.ObjectId(id), payload);
     }
 
     public async deleteEvento(id: string) {
         await this.eventoRepository.deleteEvento(new Bson.ObjectId(id));
+    }
+
+    public duracionMinima(dateA: Date, dateB: Date): boolean {
+        const diferencia = dateB.getTime() - dateA.getTime();
+        const dias = diferencia / 86400000;
+        console.log(`${dias} días`);
+        return dias >= 7;
     }
 }

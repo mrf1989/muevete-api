@@ -1,6 +1,6 @@
-import { Service, Bson } from "../../deps.ts";
+import { Service, Bson, createHash } from "../../deps.ts";
 import { UsuarioRepository } from "../repositories/usuarioRepository.ts";
-import { Usuario } from "../models/usuario.ts";
+import { Usuario } from "../models/models.ts";
 
 @Service()
 export class UsuarioService {
@@ -11,19 +11,77 @@ export class UsuarioService {
     }
 
     public async getUsuario(id: string) {
-        return await this.usuarioRepository.getUsuario(new Bson.ObjectId(id));
+        try {
+            return await this.usuarioRepository.getUsuario(new Bson.ObjectId(id));
+        } catch (err) {
+            throw err;
+        }
     }
 
-    public async createUsuario(payload: Object) {
-        const usuario: Usuario = payload as Usuario;
-        await this.usuarioRepository.createUsuario(usuario);
+    public async createUsuario(payload: Usuario): Promise<boolean> {
+        const nuevoUsuario = payload;
+        nuevoUsuario.password = this.hashPassword(nuevoUsuario.password);
+        const username = nuevoUsuario.username;
+        const usuario = await this.existeUsuario(username);       
+
+        if (!usuario) {
+            try {
+                await this.usuarioRepository.createUsuario(payload);
+                return true;
+            } catch (err) {
+                throw err;
+            }
+        } else {
+            throw new Error(`El username ${username} no está disponible`);
+        }
     }
     
-    public async updateUsuario(id: string, payload: Object) {
-        return await this.usuarioRepository.updateUsuario(new Bson.ObjectId(id), payload);
+    public async updateUsuario<T extends Usuario>(id: string, payload: T): Promise<boolean> {
+        try {
+            const usuario = await this.getUsuario(id);
+            await this.usuarioRepository.updateUsuario(usuario._id as Bson.ObjectID, payload);
+            return true;
+        } catch (err) {
+            throw err;
+        }
     }
 
     public async deleteUsuario(id: string) {
         await this.usuarioRepository.deleteUsuario(new Bson.ObjectId(id));
+    }
+
+    public async loginUsuario(payload: { username: string, password: string }): Promise<boolean> {
+        const error = new Error(`El usuario o la contraseña introducidos no son correctos`);
+        const usuario = await this.usuarioRepository.getUsuarioByUsername(payload.username);
+
+        if (usuario) {
+            const autentica = this.comparaPassword(payload.password, usuario.password);
+            if (!autentica) throw error;
+            return true;
+        } else {
+            throw error;
+        }
+    }
+
+    private async existeUsuario(username: string): Promise<boolean> {
+        try {
+            await this.usuarioRepository.getUsuarioByUsername(username);
+            return true;
+        } catch (_err) {
+            return false;
+        }
+    }
+
+    private hashPassword(password: string): string {
+        return createHash("sha3-256").update(password).toString();
+    }
+
+    private comparaPassword(entrante: string, original: string): boolean {
+        let res = false;
+        const entranteHash = this.hashPassword(entrante);
+        if (entranteHash == original) {
+            res = true;
+        }
+        return res;
     }
 }
