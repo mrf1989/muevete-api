@@ -1,14 +1,23 @@
-import { Controller, GET, PUT, POST, DELETE, RouteParam, RequestBody } from "../../deps.ts";
-import { UsuarioService } from "../services/usuarioService.ts";
+import { Controller, GET, PUT, POST, DELETE, RouteParam, RequestBody,
+    ResponseParam, RequestParam  } from "../../deps.ts";
+import { UsuarioService, AuthService } from "../services/services.ts";
 import { Usuario } from "../models/models.ts";
+import { getCookies, authUtils } from "../utils/utils.ts";
 
 @Controller("/api")
 export class UsuarioController {
-    constructor(private readonly usuarioService: UsuarioService) {}
+    constructor(private readonly usuarioService: UsuarioService,
+        private readonly authService: AuthService) {}
 
-    @GET("/usuarios")
-    public async getAllUsuarios() {
-        return await this.usuarioService.getAllUsuarios();
+    @GET("/admin/usuarios")
+    public async getAllUsuarios(@RequestParam() request: Request, @ResponseParam() response: Response) {
+        try {
+            const userSession = await this.authService.isAuth(getCookies("userSession", request.headers.get("cookie")!));
+            if (userSession) response.headers.set("Set-Cookie", authUtils.updateCookies(userSession));
+            return await this.usuarioService.getAllUsuarios();
+        } catch (err) {
+            throw err;
+        }
     }
 
     @GET("/usuarios/:id")
@@ -31,13 +40,34 @@ export class UsuarioController {
         await this.usuarioService.createUsuario(usuario);
     }
 
-    @DELETE("/usuarios/:id")
+    @DELETE("/admin/usuarios/:id")
     public async deleteUsuario(@RouteParam("id") id: string) {
         await this.usuarioService.deleteUsuario(id);
     }
-
+    
     @POST("/usuarios/login")
-    public async loginUsuario(@RequestBody() payload: { username: string, password: string }) {
-        await this.usuarioService.loginUsuario(payload);
+    public async loginUsuario(@RequestBody() payload: { username: string, password: string },
+        @ResponseParam() response: Response) {
+        try {
+            const logged = await this.authService.loginUsuario(payload);
+            if (logged) {
+                const session = await this.authService.registrarSesion(payload.username);
+                response.headers.set("Set-Cookie",
+                    `userSession=${payload.username}##${session.rol}##${session.hash}##${session.expiracion.getTime()}; Path=/api`);
+            }
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    @POST("/usuarios/logout")
+    public async logoutUsuario(@ResponseParam() response: Response,
+        @RequestBody() payload: { username: string }) {
+        try {
+            await this.authService.logoutUsuario(payload.username);
+            response.headers.set("Set-Cookie", `userSession=deleted; Path=/api`);
+        } catch (err) {
+            throw err;
+        }
     }
 }

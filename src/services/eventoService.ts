@@ -36,7 +36,6 @@ export class EventoService {
     public duracionMinima(dateA: Date, dateB: Date): boolean {
         const diferencia = dateB.getTime() - dateA.getTime();
         const dias = diferencia / 86400000;
-        console.log(`${dias} días`);
         return dias >= 7;
     }
 }
