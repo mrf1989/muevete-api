@@ -1,7 +1,7 @@
 import { asserts, Bson, Rhum, Stubbed } from "../../deps.ts";
 import { DBManagement } from "../../src/database/mongodb.ts";
-import { UsuarioRepository } from "../../src/repositories/repositories.ts";
-import { UsuarioService } from "../../src/services/services.ts";
+import { UsuarioRepository, AuthRepository } from "../../src/repositories/repositories.ts";
+import { UsuarioService, AuthService } from "../../src/services/services.ts";
 import { Usuario } from "../../src/models/models.ts";
 
 Rhum.testPlan("Testing Usuario Service", () => {
@@ -17,6 +17,7 @@ Rhum.testPlan("Testing Usuario Service", () => {
         email: "mruano@us.es"
     }
     let usuarioRepository: Stubbed<UsuarioRepository>;
+    let authRepository: Stubbed<AuthRepository>;
     
     Rhum.beforeAll(() => {
         dbManagement = Rhum.stubbed(new DBManagement());
@@ -39,15 +40,15 @@ Rhum.testPlan("Testing Usuario Service", () => {
         });
         
         Rhum.testCase("Autenticación de usuario correcto", async () => {
-            const usuarioService = new UsuarioService(usuarioRepository);
-            const correcto = await usuarioService.loginUsuario({ username: "mruano", password: "12345" });
+            const authService = new AuthService(authRepository, usuarioRepository);
+            const correcto = await authService.loginUsuario({ username: "mruano", password: "12345" });
             asserts.assertEquals(correcto, true);
         });
         
         Rhum.testCase("Autenticación de usuario incorrecto", () => {
-            const usuarioService = new UsuarioService(usuarioRepository);
+            const authService = new AuthService(authRepository, usuarioRepository);
             asserts.assertThrowsAsync(async () => {
-                await usuarioService.loginUsuario({ username: "mruano", password: "123123" });
+                await authService.loginUsuario({ username: "mruano", password: "123123" });
             }, Error, "El usuario o la contraseña introducidos no son correctos");
         });
     });
