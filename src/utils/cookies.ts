@@ -15,7 +15,7 @@ function getSessionCookie(cookies: string): Map<string, string> {
             const cookieMap = cookie.split("=");
             res.set(cookieMap[0].trim(), cookieMap[1].trim());
         });
-    } catch (err) {
+    } catch (_err) {
         throw ERR_UNKNOWN_USER;
     }
     return res;
