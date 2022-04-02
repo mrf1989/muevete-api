@@ -48,7 +48,12 @@ export class UsuarioService {
     }
 
     public async deleteUsuario(id: string) {
-        await this.usuarioRepository.deleteUsuario(new Bson.ObjectId(id));
+        try {
+            await this.usuarioRepository.deleteUsuario(new Bson.ObjectId(id));
+            return true;
+        } catch (err) {
+            throw err;
+        }
     }
 
     private async existeUsuario(username: string): Promise<boolean> {

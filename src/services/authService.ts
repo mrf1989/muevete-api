@@ -1,7 +1,7 @@
 import { Service } from "../../deps.ts";
 import { UserSession } from "../models/models.ts";
 import { AuthRepository, UsuarioRepository } from "../repositories/repositories.ts";
-import { authUtils } from "../utils/utils.ts";
+import { authUtils, getCookies } from "../utils/utils.ts";
 
 @Service()
 export class AuthService {
@@ -9,7 +9,8 @@ export class AuthService {
         private readonly usuarioRepository: UsuarioRepository) {}
 
     public async isAuth(cookie: string): Promise<UserSession | undefined> {
-        const cookies = cookie.split("##");
+        const userSessionCookie = getCookies("userSession", cookie);
+        const cookies = userSessionCookie.split("##");
         const username = cookies[0].trim();
         const hash = cookies[2].trim();
         const expiracion = parseInt(cookies[3].trim());
