@@ -2,7 +2,7 @@ import { Controller, GET, PUT, POST, DELETE, RouteParam, RequestBody,
     ResponseParam, RequestParam  } from "../../deps.ts";
 import { UsuarioService, AuthService } from "../services/services.ts";
 import { Usuario } from "../models/models.ts";
-import { getCookies, authUtils } from "../utils/utils.ts";
+import { authUtils } from "../utils/utils.ts";
 
 @Controller("/api")
 export class UsuarioController {
@@ -12,7 +12,7 @@ export class UsuarioController {
     @GET("/admin/usuarios")
     public async getAllUsuarios(@RequestParam() request: Request, @ResponseParam() response: Response) {
         try {
-            const userSession = await this.authService.isAuth(getCookies("userSession", request.headers.get("cookie")!));
+            const userSession = await this.authService.isAuth(request.headers.get("cookie")!);
             if (userSession) response.headers.set("Set-Cookie", authUtils.updateCookies(userSession));
             return await this.usuarioService.getAllUsuarios();
         } catch (err) {

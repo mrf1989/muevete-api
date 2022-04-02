@@ -17,13 +17,13 @@ export class UsuarioRepository {
     }
     
     public async getAll(): Promise<Usuario[]> {
-        const usuarios = await this.usuarios.find({}, {projection: {"password": 0}}).toArray();
+        const usuarios = await this.usuarios.find({}, {projection: {"password": 0, "session": 0}}).toArray();
         if (!usuarios) throw new Error("No se encuentran usuarios");
         return usuarios;
     }
 
     public async getUsuario(id: Bson.ObjectID): Promise<Usuario> {
-        const usuario = await this.usuarios.findOne({"_id": id}, {projection: {"password": 0}});
+        const usuario = await this.usuarios.findOne({"_id": id}, {projection: {"password": 0, "session": 0}});
         if (!usuario) throw new Error("Usuario no encontrado");
         return usuario;
     }
@@ -44,7 +44,7 @@ export class UsuarioRepository {
     }
 
     public async deleteUsuario(id: Bson.ObjectID) {
-        const res =await this.usuarios.deleteOne({"_id": id});
+        const res = await this.usuarios.deleteOne({"_id": id});
         if (!res) throw new Error("Error en la eliminación del ususario");
         return res;
     }
