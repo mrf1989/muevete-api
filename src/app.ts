@@ -9,12 +9,14 @@ import { DBManagement } from "./database/mongodb.ts";
 
 const controllers = [
     Controllers.UsuarioController,
-    Controllers.EventoController
+    Controllers.EventoController,
+    Controllers.ArticuloController
 ];
 const services = [
     Services.EventoService,
     Services.UsuarioService,
-    Services.AuthService
+    Services.AuthService,
+    Services.ArticuloService
 ];
 const middleware = [Middlewares.AutorizaAdmin];
 const repositories = [];
@@ -23,7 +25,8 @@ const components = [
     DBManagement,
     Repositories.EventoRepository,
     Repositories.UsuarioRepository,
-    Repositories.AuthRepository
+    Repositories.AuthRepository,
+    Repositories.ArticuloRepository
 ];
 const otherModules = [];
 

@@ -27,7 +27,7 @@ export class UsuarioService {
 
         if (!usuario) {
             try {
-                await this.usuarioRepository.createUsuario(payload);
+                await this.usuarioRepository.createUsuario(nuevoUsuario);
                 return true;
             } catch (err) {
                 throw err;
