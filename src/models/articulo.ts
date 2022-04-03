@@ -1,3 +1,5 @@
+// deno-lint-ignore-file
+
 import { Bson } from "../../deps.ts";
 
 export interface Articulo {
