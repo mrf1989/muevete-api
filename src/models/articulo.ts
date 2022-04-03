@@ -9,4 +9,5 @@ export interface Articulo {
     categoria: string;
     referencia?: string;
     enlaceImagen?: string;
+    usuario_id: Bson.ObjectID;
 }
