@@ -33,11 +33,20 @@ export class EventoRepository {
         if (!res) throw new Error("Error en la creación del evento");
     }
 
-    public async updateEvento<T extends Evento>(id: Bson.ObjectID, payload: T) {
-        await this.eventos.updateOne({"_id": id}, {$set: payload});
+    public async updateEvento<T extends Evento>(id: Bson.ObjectID, payload: T): Promise<boolean> {
+        try {
+            await this.eventos.updateOne({"_id": id}, {$set: payload});
+            return true;
+        } catch (err) {
+            throw err;
+        }
     }
 
     public async deleteEvento(id: Bson.ObjectID) {
-        await this.eventos.deleteOne({"_id": id});
+        try {
+            return await this.eventos.deleteOne({"_id": id});
+        } catch (err) {
+            throw err;
+        }
     }
 }
