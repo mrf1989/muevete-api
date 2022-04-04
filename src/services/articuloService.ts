@@ -32,4 +32,13 @@ export class ArticuloService {
             throw err;
         }
     }
+
+    public async deleteArticulo(id: string) {
+        try {
+            await this.articuloRepository.deleteArticulo(new Bson.ObjectId(id));
+            return true;
+        } catch (err) {
+            throw err;
+        }
+    }
 }
