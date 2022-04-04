@@ -6,6 +6,10 @@ import { Articulo } from "../models/models.ts";
 export class ArticuloService {
     constructor(private readonly articuloRepository: ArticuloRepository) {}
 
+    public async getAllArticulos(): Promise<Articulo[]> {
+        return await this.articuloRepository.getAll();
+    }
+    
     public async getArticulo(id: string): Promise<Articulo> {
         try {
             return await this.articuloRepository.getArticulo(new Bson.ObjectId(id));

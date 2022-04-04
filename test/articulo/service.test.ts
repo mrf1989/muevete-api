@@ -49,6 +49,16 @@ Rhum.testPlan("Testing Articulo Service", () => {
             const res = await articuloService.updateArticulo("6235d572c077516a2dffa8ff", articuloEditado);
             asserts.assertEquals(res, true);
         });
+
+        Rhum.testCase("Listar todos los artículos", async () => {
+            articuloRepository.stub("getAll", () => {
+                return [articulo, articulo, articulo];
+            });
+
+            const articuloService = new ArticuloService(articuloRepository);
+            const articulos = await articuloService.getAllArticulos();
+            asserts.assertEquals(articulos.length, 3);
+        });
     });
 });
 

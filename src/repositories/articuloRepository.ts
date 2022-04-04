@@ -16,6 +16,12 @@ export class ArticuloRepository {
         this.articulos = this.storage.getCollection("articulos", this.db);
     }
 
+    public async getAll(): Promise<Articulo[]> {
+        const articulos = await this.articulos.find().toArray();
+        if (!articulos) throw new Error("No se encuentran artículos");
+        return articulos;
+    }
+
     public async getArticulo(id: Bson.ObjectID): Promise<Articulo> {
         const articulo = await this.articulos.findOne({"_id": id});
         if (!articulo) throw new Error("Artículo no encontrado");
