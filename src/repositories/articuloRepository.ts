@@ -30,4 +30,8 @@ export class ArticuloRepository {
     public async updateArticulo<T extends Articulo>(id: Bson.ObjectID, payload: T) {
         await this.articulos.updateOne({"_id": id}, {$set: payload});
     }
+
+    public async deleteArticulo(id: Bson.ObjectID) {
+        await this.articulos.deleteOne({"_id": id});
+    }
 }

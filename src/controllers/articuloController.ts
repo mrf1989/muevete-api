@@ -1,4 +1,4 @@
-import { Controller, POST, RequestBody, Bson, PUT, RouteParam, RequestParam, ResponseParam } from "../../deps.ts";
+import { Controller, POST, RequestBody, Bson, PUT, RouteParam, RequestParam, ResponseParam, DELETE } from "../../deps.ts";
 import { ArticuloService, AuthService } from "../services/services.ts";
 import { Articulo } from "../models/models.ts";
 import { authUtils } from "../utils/utils.ts";
@@ -27,6 +27,17 @@ export class ArticuloController {
         try {
             this.getAuthorization(request, response);
             await this.articuloService.updateArticulo(id, payload);
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    @DELETE("/admin/articulos/:id")
+    public async deleteArticulo(@RouteParam("id") id: string, @RequestParam() request: Request,
+        @ResponseParam() response: Response) {
+        try {
+            this.getAuthorization(request, response);
+            await this.articuloService.deleteArticulo(id);
         } catch (err) {
             throw err;
         }
