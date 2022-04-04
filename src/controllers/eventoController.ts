@@ -16,18 +16,18 @@ export class EventoController {
         return await this.eventoService.getEvento(id);
     }
 
-    @PUT("/eventos/:id")
+    @PUT("/admin/eventos/:id")
     public async updateEvento<T extends Evento>(@RouteParam("id") id: string, @RequestBody() payload: T) {
-        await this.eventoService.updateEvento(id, payload);
+        return await this.eventoService.updateEvento(id, payload);
     }
 
-    @POST("/eventos")
+    @POST("/admin/eventos")
     public async createEvento(@RequestBody() payload: Evento) {
         await this.eventoService.createEvento(payload);
     }
 
-    @DELETE("/eventos/:id")
-    public async deleteevento(@RouteParam("id") id: string) {
-        await this.eventoService.deleteEvento(id);
+    @DELETE("/admin/eventos/:id")
+    public async deleteEvento(@RouteParam("id") id: string) {
+        return await this.eventoService.deleteEvento(id);
     }
 }

@@ -13,7 +13,7 @@ Rhum.testPlan("Testing Evento Service", () => {
         objetivoKm: 5000,
         fechaCreacion: new Date("2022-03-01"),
         fechaInicio: new Date("2022-03-01"),
-        fechaFin: new Date("2022-03-08"),
+        fechaFin: new Date("2022-03-10"),
         modalidad: ["caminata", "carrera"]
     }
     let eventoRepository: Stubbed<EventoRepository>;
@@ -54,6 +54,31 @@ Rhum.testPlan("Testing Evento Service", () => {
             const eventoService = new EventoService(eventoRepository);
             const eventos = await eventoService.getAllEventos();
             asserts.assertEquals(eventos.length, 3);
+        });
+
+        Rhum.testCase("Actualiza la información de evento", async () => {
+            eventoRepository.stub("getEvento", () => {
+                return evento;
+            });
+            eventoRepository.stub("updateEvento", () => true);
+            const eventoService = new EventoService(eventoRepository);
+            const nuevosDatos = {nombre: "Caminar para vencer 2022", objetivoKm: 8000, fechaFin: "2022-03-20"};
+            const res = await eventoService.updateEvento(evento._id!.id, nuevosDatos as unknown as Evento);
+            
+            asserts.assertEquals(res, true);
+        });
+
+        Rhum.testCase("No actualiza evento por duración no válida", () => {
+            eventoRepository.stub("getEvento", () => {
+                return evento;
+            });
+            eventoRepository.stub("updateEvento", () => true);
+            const eventoService = new EventoService(eventoRepository);
+            const nuevosDatos = {nombre: "Caminar para vencer 2022", fechaInicio: "2022-03-15", fechaFin: "2022-03-20"};
+            
+            asserts.assertThrowsAsync(async () => {
+                await eventoService.updateEvento(evento._id!.id, nuevosDatos as unknown as Evento);
+            }, Error, "El evento debe durar un mínimo de 7 días");
         });
     });
 });
