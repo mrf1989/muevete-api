@@ -1,4 +1,4 @@
-import { Controller, POST, RequestBody, Bson, PUT, RouteParam, RequestParam, ResponseParam, DELETE } from "../../deps.ts";
+import { Controller, GET, POST, RequestBody, Bson, PUT, RouteParam, RequestParam, ResponseParam, DELETE } from "../../deps.ts";
 import { ArticuloService, AuthService } from "../services/services.ts";
 import { Articulo } from "../models/models.ts";
 import { authUtils } from "../utils/utils.ts";
@@ -8,6 +8,24 @@ export class ArticuloController {
     constructor(private readonly articuloService: ArticuloService,
         private readonly authService: AuthService) {}
 
+    @GET("/articulos")
+    public async getAllArticulos() {
+        try {
+            return await this.articuloService.getAllArticulos();
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    @GET("/articulos/:id")
+    public async getArticulo(@RouteParam("id") id: string) {
+        try {
+            return await this.articuloService.getArticulo(id);
+        } catch (err) {
+            throw err;
+        }
+    }
+    
     @POST("/admin/articulos")
     public async createArticulo(@RequestBody() payload: Articulo, @RequestParam() request: Request,
         @ResponseParam() response: Response) {
