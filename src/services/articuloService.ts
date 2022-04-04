@@ -1,4 +1,4 @@
-import { Service } from "../../deps.ts";
+import { Bson, Service } from "../../deps.ts";
 import { ArticuloRepository } from "../repositories/repositories.ts";
 import { Articulo } from "../models/models.ts";
 
@@ -6,9 +6,27 @@ import { Articulo } from "../models/models.ts";
 export class ArticuloService {
     constructor(private readonly articuloRepository: ArticuloRepository) {}
 
+    public async getArticulo(id: string): Promise<Articulo> {
+        try {
+            return await this.articuloRepository.getArticulo(new Bson.ObjectId(id));
+        } catch (err) {
+            throw err;
+        }
+    }
+    
     public async createArticulo(payload: Articulo): Promise<boolean> {
         try {
             await this.articuloRepository.createArticulo(payload);
+            return true;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+    public async updateArticulo<T extends Articulo>(id: string, payload: T): Promise<boolean> {
+        try {
+            const articulo = await this.getArticulo(id);
+            await this.articuloRepository.updateArticulo(articulo._id as Bson.ObjectID, payload);
             return true;
         } catch (err) {
             throw err;
