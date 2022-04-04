@@ -1,3 +1,5 @@
+// deno-lint-ignore-file
+
 import { asserts, Bson, Rhum, Stubbed } from "../../deps.ts";
 import { DBManagement } from "../../src/database/mongodb.ts";
 import { ArticuloRepository } from "../../src/repositories/repositories.ts";
@@ -37,7 +39,7 @@ Rhum.testPlan("Testing Articulo Service", () => {
 
         Rhum.testCase("Actualiza un artículo", async () => {
             articuloRepository.stub("updateArticulo", () => {});
-            articuloRepository.stub("getArticulo", async () => {
+            articuloRepository.stub("getArticulo", () => {
                 return articulo;
             });
 
