@@ -1,3 +1,5 @@
+// deno-lint-ignore-file
+
 import { asserts, Bson, Rhum, Stubbed } from "../../deps.ts";
 import { DBManagement } from "../../src/database/mongodb.ts";
 import { DorsalRepository, EventoRepository } from "../../src/repositories/repositories.ts";
