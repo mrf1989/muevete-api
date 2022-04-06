@@ -52,7 +52,8 @@ Rhum.testPlan("Testing Evento Service", () => {
             });
 
             const eventoService = new EventoService(eventoRepository);
-            const eventos = await eventoService.getAllEventos();
+            const filter = new Map();
+            const eventos = await eventoService.getAllEventos(filter);
             asserts.assertEquals(eventos.length, 3);
         });
 

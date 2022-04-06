@@ -8,6 +8,7 @@ export {
     Middleware,
     POST,
     PUT,
+    QueryParam,
     RequestBody,
     RequestParam,
     ResponseParam,
