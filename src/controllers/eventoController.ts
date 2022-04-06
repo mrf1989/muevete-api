@@ -1,4 +1,4 @@
-import { Controller, GET, PUT, POST, DELETE, RouteParam, RequestBody } from "../../deps.ts";
+import { Controller, GET, PUT, POST, DELETE, RouteParam, RequestBody, QueryParam } from "../../deps.ts";
 import { EventoService } from "../services/services.ts";
 import { Evento } from "../models/models.ts";
 
@@ -7,8 +7,13 @@ export class EventoController {
     constructor(private readonly eventoService: EventoService) {}
 
     @GET("/eventos")
-    public async getAllEventos() {
-        return await this.eventoService.getAllEventos();
+    public async getAllEventos(@QueryParam("objetivoKm") objetivoKm: string, @QueryParam("modalidad") modalidad: string,
+        @QueryParam("fechaFin") fechaFin: string) {
+        const filtros: Map<string, string> = new Map();
+        if (objetivoKm) filtros.set("objetivoKm", objetivoKm);
+        if (modalidad) filtros.set("modalidad", modalidad);
+        if (fechaFin) filtros.set("fechaFin", fechaFin);
+        return await this.eventoService.getAllEventos(filtros);
     }
 
     @GET("/eventos/:id")

@@ -8,8 +8,14 @@ const ERROR_DURACION_EVENTO = new Error("El evento debe durar un m√≠nimo de 7 d√
 export class EventoService {
     constructor(private readonly eventoRepository: EventoRepository) {}
 
-    public async getAllEventos() {
-        return await this.eventoRepository.getAll();
+    public async getAllEventos(filtros: Map<string, string>) {
+        const filter: Bson.Document = {};
+        if (filtros.size > 0) {
+            if (filtros.has("objetivoKm")) filter.objetivoKm = {$gte: parseInt(filtros.get("objetivoKm")!)};
+            if (filtros.has("modalidad")) filter.modalidad = filtros.get("modalidad");
+            if (filtros.has("fechaFin")) filter.fechaFin = {$lte: new Date(filtros.get("fechaFin")!)};
+        }
+        return await this.eventoRepository.getAll(filter);
     }
 
     public async getEvento(id: string) {

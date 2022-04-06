@@ -16,8 +16,8 @@ export class EventoRepository {
         this.eventos = this.storage.getCollection("eventos", this.db);
     }
     
-    public async getAll(): Promise<Evento[]> {
-        const eventos = await this.eventos.find().toArray();
+    public async getAll(filtro: Bson.Document): Promise<Evento[]> {
+        const eventos = await this.eventos.find(filtro).toArray();
         if (!eventos) throw new Error("No se encuentran eventos");
         return eventos;
     }
