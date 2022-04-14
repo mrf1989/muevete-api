@@ -2,8 +2,8 @@
 
 import { asserts, Bson, Rhum, Stubbed } from "../../deps.ts";
 import { DBManagement } from "../../src/database/mongodb.ts";
-import { DorsalRepository, EventoRepository } from "../../src/repositories/repositories.ts";
-import { DorsalService, EventoService } from "../../src/services/services.ts";
+import { DorsalRepository, EventoRepository, EsfuerzoRepository } from "../../src/repositories/repositories.ts";
+import { DorsalService } from "../../src/services/services.ts";
 import { Dorsal } from "../../src/models/models.ts";
 
 Rhum.testPlan("Testing Dorsal Service", () => {
@@ -17,7 +17,7 @@ Rhum.testPlan("Testing Dorsal Service", () => {
     }
     let dorsalRepository: Stubbed<DorsalRepository>;
     let eventoRepository: Stubbed<EventoRepository>;
-    let eventoService: Stubbed<EventoService>;
+    let esfuerzoRepository: Stubbed<EsfuerzoRepository>;
 
     Rhum.beforeAll(() => {
         dbManagement = Rhum.stubbed(new DBManagement());
@@ -29,15 +29,14 @@ Rhum.testPlan("Testing Dorsal Service", () => {
         Rhum.beforeEach(() => {
             dorsalRepository = Rhum.stubbed(new DorsalRepository(dbManagement));
             eventoRepository = Rhum.stubbed(new EventoRepository(dbManagement));
-            eventoService = Rhum.stubbed(new EventoService(eventoRepository));
+            esfuerzoRepository = Rhum.stubbed(new EsfuerzoRepository(dbManagement));
         });
 
         Rhum.testCase("Permite crear un dorsal", async () => {   
-            eventoService.stub("getEvento", () => true);
             dorsalRepository.stub("getAll", () => { return [] });
             dorsalRepository.stub("createDorsal", () => {});
     
-            const dorsalService = new DorsalService(dorsalRepository, eventoService);
+            const dorsalService = new DorsalService(dorsalRepository, esfuerzoRepository, eventoRepository);
             const res = await dorsalService.createDorsal({
                 lema: "A por todas!",
                 usuario_id: "6235d572c077516a2dffa836",
