@@ -43,12 +43,4 @@ export class DorsalRepository {
             throw err;
         }
     }
-
-    public async deleteDorsal(id: Bson.ObjectID) {
-        try {
-            return await this.dorsales.deleteOne({"_id": id});
-        } catch (err) {
-            throw err;
-        }
-    }
 }

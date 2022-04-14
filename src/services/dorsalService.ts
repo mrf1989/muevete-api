@@ -42,10 +42,4 @@ export class DorsalService {
         if (!res) throw new Error("El dorsal no se ha podido actualizar");
         return res;
     }
-
-    public async deleteDorsal(id: string) {
-        const res = await this.dorsalRepository.deleteDorsal(new Bson.ObjectId(id));
-        if (!res) throw new Error("El dorsal no ha podido ser eliminado");
-        return res;
-    }
 }
