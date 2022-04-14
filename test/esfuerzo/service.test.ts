@@ -18,6 +18,16 @@ Rhum.testPlan("Testing Esfuerzo Service", () => {
         fechaFin: new Date("2022-03-10"),
         modalidad: ["caminata", "bicicleta"]
     }
+    const evento2: Evento = {
+        _id: new Bson.ObjectID("6235d572c077516a2dffa828"),
+        nombre: "Caminar para vencer",
+        descripcion: "Descripción de la actividad deportiva y de la enfermedad contra la que se lucha",
+        objetivoKm: 700,
+        fechaCreacion: new Date("2022-03-01"),
+        fechaInicio: new Date("2022-03-01"),
+        fechaFin: new Date("2022-03-10"),
+        modalidad: ["caminata"]
+    }
     const dorsal: Dorsal = {
         _id: new Bson.ObjectID("6235d572c077516a2dffa8ff"),
         lema: "Caminar para vencer",
@@ -72,7 +82,20 @@ Rhum.testPlan("Testing Esfuerzo Service", () => {
             const esfuerzoService = new EsfuerzoService(esfuerzoRepository, dorsalRepository, eventoRepository);
             asserts.assertThrowsAsync(async () => {
                 await esfuerzoService.createEsfuerzo(esfuerzo);
-            }, Error);
+            }, Error, "No pueden realizarse más esfuerzos para un evento completado");
+        });
+
+        Rhum.testCase("Evita creación de esfuerzos si no cumple con la/s modalidad/es", async () => {
+            eventoRepository.stub("getEvento", () => { return evento2 });
+            dorsalRepository.stub("getDorsal", () => { return dorsal });
+            dorsalRepository.stub("getAll", () => { return [dorsal] });
+            esfuerzoRepository.stub("getEsfuerzosTotales", () => { return 123 });
+            esfuerzoRepository.stub("createEsfuerzo", () => {});
+
+            const esfuerzoService = new EsfuerzoService(esfuerzoRepository, dorsalRepository, eventoRepository);
+            asserts.assertThrowsAsync(async () => {
+                await esfuerzoService.createEsfuerzo(esfuerzo);
+            }, Error, "No pueden realizarse esfuerzos en una modalidad no permitida en el evento");
         });
     });
 });
