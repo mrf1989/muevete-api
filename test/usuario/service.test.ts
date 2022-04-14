@@ -1,7 +1,7 @@
 import { asserts, Bson, Rhum, Stubbed } from "../../deps.ts";
 import { DBManagement } from "../../src/database/mongodb.ts";
-import { UsuarioRepository } from "../../src/repositories/repositories.ts";
-import { UsuarioService } from "../../src/services/services.ts";
+import { UsuarioRepository, AuthRepository } from "../../src/repositories/repositories.ts";
+import { UsuarioService, AuthService } from "../../src/services/services.ts";
 import { Usuario } from "../../src/models/models.ts";
 
 Rhum.testPlan("Testing Usuario Service", () => {
@@ -17,6 +17,7 @@ Rhum.testPlan("Testing Usuario Service", () => {
         email: "mruano@us.es"
     }
     let usuarioRepository: Stubbed<UsuarioRepository>;
+    let authRepository: Stubbed<AuthRepository>;
     
     Rhum.beforeAll(() => {
         dbManagement = Rhum.stubbed(new DBManagement());
@@ -39,15 +40,15 @@ Rhum.testPlan("Testing Usuario Service", () => {
         });
         
         Rhum.testCase("Autenticación de usuario correcto", async () => {
-            const usuarioService = new UsuarioService(usuarioRepository);
-            const correcto = await usuarioService.loginUsuario({ username: "mruano", password: "12345" });
+            const authService = new AuthService(authRepository, usuarioRepository);
+            const correcto = await authService.loginUsuario({ username: "mruano", password: "12345" });
             asserts.assertEquals(correcto, true);
         });
         
         Rhum.testCase("Autenticación de usuario incorrecto", () => {
-            const usuarioService = new UsuarioService(usuarioRepository);
+            const authService = new AuthService(authRepository, usuarioRepository);
             asserts.assertThrowsAsync(async () => {
-                await usuarioService.loginUsuario({ username: "mruano", password: "123123" });
+                await authService.loginUsuario({ username: "mruano", password: "123123" });
             }, Error, "El usuario o la contraseña introducidos no son correctos");
         });
     });
@@ -107,7 +108,39 @@ Rhum.testPlan("Testing Usuario Service", () => {
             const usuarioService = new UsuarioService(usuarioRepository);
             
             asserts.assertThrowsAsync(async () => {
-                if (user._id) await usuarioService.updateUsuario(user._id.id, {apellidos: "Ruano", ciudad: "Chipiona"} as Usuario);
+                await usuarioService.updateUsuario(user._id!.id, {apellidos: "Ruano", ciudad: "Chipiona"} as Usuario);
+            });
+        });
+
+        Rhum.testCase("Lista todos los usuarios registrados en el sistema", async () => {
+            usuarioRepository.stub("getAll", () => {
+                return [user, user, user]
+            });
+
+            const usuarioService = new UsuarioService(usuarioRepository);
+            const usuarios = await usuarioService.getAllUsuarios();
+            asserts.assertEquals(usuarios.length, 3);
+        });
+
+        Rhum.testCase("Elimina un usuario registrado en el sistema", async () => {
+            usuarioRepository.stub("deleteUsuario", () => {
+                return 1;
+            });
+
+            const usuarioService = new UsuarioService(usuarioRepository);
+            const res = await usuarioService.deleteUsuario(user._id!.id);
+            asserts.assertEquals(res, true);
+        });
+
+        Rhum.testCase("Lanza error si se elimina un usuario que no existe", () => {
+            usuarioRepository.stub("deleteUsuario", () => {
+                throw new Error("Error en la eliminación del ususario");
+            });
+
+            const usuarioService = new UsuarioService(usuarioRepository);
+
+            asserts.assertThrowsAsync(async () => {
+                await usuarioService.deleteUsuario(user._id!.id);
             });
         });
     });

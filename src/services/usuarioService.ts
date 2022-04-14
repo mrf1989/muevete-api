@@ -1,6 +1,7 @@
-import { Service, Bson, createHash } from "../../deps.ts";
-import { UsuarioRepository } from "../repositories/usuarioRepository.ts";
+import { Service, Bson } from "../../deps.ts";
+import { UsuarioRepository } from "../repositories/repositories.ts";
 import { Usuario } from "../models/models.ts";
+import { authUtils } from "../utils/utils.ts";
 
 @Service()
 export class UsuarioService {
@@ -20,13 +21,13 @@ export class UsuarioService {
 
     public async createUsuario(payload: Usuario): Promise<boolean> {
         const nuevoUsuario = payload;
-        nuevoUsuario.password = this.hashPassword(nuevoUsuario.password);
+        nuevoUsuario.password = authUtils.hashPassword(nuevoUsuario.password);
         const username = nuevoUsuario.username;
         const usuario = await this.existeUsuario(username);       
 
         if (!usuario) {
             try {
-                await this.usuarioRepository.createUsuario(payload);
+                await this.usuarioRepository.createUsuario(nuevoUsuario);
                 return true;
             } catch (err) {
                 throw err;
@@ -47,19 +48,11 @@ export class UsuarioService {
     }
 
     public async deleteUsuario(id: string) {
-        await this.usuarioRepository.deleteUsuario(new Bson.ObjectId(id));
-    }
-
-    public async loginUsuario(payload: { username: string, password: string }): Promise<boolean> {
-        const error = new Error(`El usuario o la contraseña introducidos no son correctos`);
-        const usuario = await this.usuarioRepository.getUsuarioByUsername(payload.username);
-
-        if (usuario) {
-            const autentica = this.comparaPassword(payload.password, usuario.password);
-            if (!autentica) throw error;
+        try {
+            await this.usuarioRepository.deleteUsuario(new Bson.ObjectId(id));
             return true;
-        } else {
-            throw error;
+        } catch (err) {
+            throw err;
         }
     }
 
@@ -70,18 +63,5 @@ export class UsuarioService {
         } catch (_err) {
             return false;
         }
-    }
-
-    private hashPassword(password: string): string {
-        return createHash("sha3-256").update(password).toString();
-    }
-
-    private comparaPassword(entrante: string, original: string): boolean {
-        let res = false;
-        const entranteHash = this.hashPassword(entrante);
-        if (entranteHash == original) {
-            res = true;
-        }
-        return res;
     }
 }

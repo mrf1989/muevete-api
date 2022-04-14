@@ -1,15 +1,21 @@
-// Depedencias de framework MandarineTS
+// Depedencias de framework MandarineTS v2.3.2
 export { 
     Component,
     Controller,
     DELETE,
     GET,
     MandarineCore,
+    Middleware,
     POST,
     PUT,
+    QueryParam,
     RequestBody,
+    RequestParam,
+    ResponseParam,
     RouteParam,
     Service } from "https://deno.land/x/mandarinets@v2.3.2/mod.ts";
+export type { MiddlewareTarget } from "https://deno.land/x/mandarinets@v2.3.2/mod.ts";
+
 export { createHash } from "https://deno.land/std@0.129.0/hash/mod.ts";
 
 // Dependencias de MongoDB

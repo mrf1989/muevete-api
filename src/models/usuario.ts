@@ -12,4 +12,15 @@ export interface Usuario {
     email: string;
     telefono?: string;
     ciudad?: string;
+    session?: {
+        hash: string,
+        expiracion?: Date,
+    }
+}
+
+export interface UserSession {
+    username: string;
+    hash: string;
+    expiracion: Date;
+    rol: string | undefined;
 }
