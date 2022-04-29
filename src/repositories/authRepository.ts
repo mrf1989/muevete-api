@@ -17,7 +17,8 @@ export class AuthRepository {
     }
 
     public async getSessionByUsername(username: string): Promise<Usuario> {
-        const usuario = await this.usuarios.findOne({"username": username}, {projection: {"session": 1}});
+        const usuario = await this.usuarios.findOne({"username": username},
+            {noCursorTimeout: false, projection: {"session": 1}});
         if (!usuario) throw new Error(`${username} no existe`);
         return usuario;
     }
@@ -26,7 +27,7 @@ export class AuthRepository {
         const hash = createHash("sha512").update(username).toString();
         let rol;
         try {
-            const usuario = await this.usuarios.findOne({"username": username});
+            const usuario = await this.usuarios.findOne({"username": username}, { noCursorTimeout: false });
             rol = usuario?.rol;
             await this.usuarios.updateOne({"username": username}, {$set: {"session": {"hash": hash, "expiracion": new Date(Date.now() + 3600000)}}});
         } catch (err) {

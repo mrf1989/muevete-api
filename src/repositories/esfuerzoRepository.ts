@@ -17,13 +17,13 @@ export class EsfuerzoRepository {
     }
     
     public async getAll(filter: Bson.Document): Promise<Esfuerzo[]> {
-        const esfuerzos = await this.esfuerzos.find(filter).toArray();
+        const esfuerzos = await this.esfuerzos.find(filter, { noCursorTimeout: false }).toArray();
         if (!esfuerzos) throw new Error("No se han encontrado esfuerzos");
         return esfuerzos;
     }
 
     public async getEsfuerzo(id: Bson.ObjectID): Promise<Esfuerzo> {
-        const esfuerzo = await this.esfuerzos.findOne({"_id": id});
+        const esfuerzo = await this.esfuerzos.findOne({"_id": id}, { noCursorTimeout: false });
         if (!esfuerzo) throw new Error("Esfuerzo no encontrado");
         return esfuerzo;
     }
@@ -37,7 +37,7 @@ export class EsfuerzoRepository {
         let acum = 0;
         await this.esfuerzos.find({
             "dorsal_id": { $in: dorsales }
-        }).map(esfuerzo => acum = acum + esfuerzo.numKm);
+        }, { noCursorTimeout: false }).map(esfuerzo => acum = acum + esfuerzo.numKm);
         return acum;
     }
 }
