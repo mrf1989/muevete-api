@@ -19,13 +19,13 @@ export class DorsalRepository {
     }
     
     public async getAll(filter: Bson.Document): Promise<Dorsal[]> {
-        const dorsales = await this.dorsales.find(filter).toArray();
+        const dorsales = await this.dorsales.find(filter, { noCursorTimeout: false }).toArray();
         if (!dorsales) throw ERROR_NOT_FOUND;
         return dorsales;
     }
 
     public async getDorsal(id: Bson.ObjectID): Promise<Dorsal> {
-        const dorsal = await this.dorsales.findOne({"_id": id});
+        const dorsal = await this.dorsales.findOne({"_id": id}, { noCursorTimeout: false });
         if (!dorsal) throw new Error("Dorsal no encontrado");
         return dorsal;
     }

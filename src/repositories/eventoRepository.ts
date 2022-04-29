@@ -17,13 +17,13 @@ export class EventoRepository {
     }
     
     public async getAll(filtro: Bson.Document): Promise<Evento[]> {
-        const eventos = await this.eventos.find(filtro).toArray();
+        const eventos = await this.eventos.find(filtro, { noCursorTimeout: false }).toArray();
         if (!eventos) throw new Error("No se encuentran eventos");
         return eventos;
     }
 
     public async getEvento(id: Bson.ObjectID): Promise<Evento> {
-        const evento = await this.eventos.findOne({"_id": id});
+        const evento = await this.eventos.findOne({"_id": id}, { noCursorTimeout: false });
         if (!evento) throw new Error("Evento no encontrado");
         return evento;
     }
@@ -54,7 +54,7 @@ export class EventoRepository {
         const eventosId = ids.map(id => new Bson.ObjectID(id));
         const eventos = await this.eventos.find({
             "_id:": { $in: eventosId }
-        }).toArray();
+        }, { noCursorTimeout: false }).toArray();
         return eventos;
     }
 }

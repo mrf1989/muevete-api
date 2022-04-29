@@ -27,7 +27,7 @@ Es necesario tener configuradas las variables de entorno en `.env` y tener activ
 La aplicación se ejecuta mediante el siguiente comando, desde el directorio raíz del proyecto:
 
 ```
-deno run -c ./tsconfig.ts --allow-net --allow-env --allow-read --unstable ./src/app.ts
+deno run -c ./tsconfig.json --allow-net --allow-env --allow-read --unstable ./src/app.ts
 ```
 
 ### Ejecutar los tests

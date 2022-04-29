@@ -17,19 +17,21 @@ export class UsuarioRepository {
     }
     
     public async getAll(): Promise<Usuario[]> {
-        const usuarios = await this.usuarios.find({}, {projection: {"password": 0, "session": 0}}).toArray();
+        const usuarios = await this.usuarios.find({},
+            {noCursorTimeout: false, projection: {"password": 0, "session": 0}}).toArray();
         if (!usuarios) throw new Error("No se encuentran usuarios");
         return usuarios;
     }
 
     public async getUsuario(id: Bson.ObjectID): Promise<Usuario> {
-        const usuario = await this.usuarios.findOne({"_id": id}, {projection: {"password": 0, "session": 0}});
+        const usuario = await this.usuarios.findOne({"_id": id},
+            {noCursorTimeout: false, projection: {"password": 0, "session": 0}});
         if (!usuario) throw new Error("Usuario no encontrado");
         return usuario;
     }
 
     public async getUsuarioByUsername(username: string): Promise<Usuario> {
-        const usuario = await this.usuarios.findOne({"username": username});
+        const usuario = await this.usuarios.findOne({"username": username}, { noCursorTimeout: false });
         if (!usuario) throw new Error(`${username} no existe`);
         return usuario;
     }

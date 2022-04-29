@@ -1,10 +1,13 @@
-import { Controller, GET, PUT, POST, DELETE, RouteParam, RequestBody, QueryParam } from "../../deps.ts";
-import { EventoService } from "../services/services.ts";
+import { Controller, GET, PUT, POST, DELETE, RouteParam, RequestBody,
+    QueryParam, RequestParam, ResponseParam } from "../../deps.ts";
+import { EventoService, AuthService } from "../services/services.ts";
 import { Evento } from "../models/models.ts";
+import { authUtils } from "../utils/utils.ts";
 
 @Controller("/api")
 export class EventoController {
-    constructor(private readonly eventoService: EventoService) {}
+    constructor(private readonly eventoService: EventoService,
+        private readonly authService: AuthService) {}
 
     @GET("/eventos")
     public async getAllEventos(@QueryParam("objetivoKm") objetivoKm: string, @QueryParam("modalidad") modalidad: string,
@@ -34,5 +37,10 @@ export class EventoController {
     @DELETE("/admin/eventos/:id")
     public async deleteEvento(@RouteParam("id") id: string) {
         return await this.eventoService.deleteEvento(id);
+    }
+
+    private async getAuthorization(@RequestParam() request: Request, @ResponseParam() response: Response) {
+        const userSession = await this.authService.isAuth(request.headers.get("cookie")!);
+        if (userSession) response.headers.set("Set-Cookie", authUtils.updateCookies(userSession));
     }
 }
