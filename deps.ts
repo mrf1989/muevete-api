@@ -13,10 +13,12 @@ export {
     RequestParam,
     ResponseParam,
     RouteParam,
-    Service } from "https://deno.land/x/mandarinets@v2.3.2/mod.ts";
+    Service,
+    Session } from "https://deno.land/x/mandarinets@v2.3.2/mod.ts";
 export type { MiddlewareTarget } from "https://deno.land/x/mandarinets@v2.3.2/mod.ts";
 
 export { createHash } from "https://deno.land/std@0.129.0/hash/mod.ts";
+import { Cookie, getCookies, setCookie, deleteCookie } from "https://deno.land/std@0.94.0/http/cookie.ts";
 
 // Dependencias de MongoDB
 export { MongoClient, Bson } from "https://deno.land/x/mongo@v0.23.0/mod.ts";
