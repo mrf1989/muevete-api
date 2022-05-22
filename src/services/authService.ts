@@ -1,12 +1,19 @@
-import { Service } from "../../deps.ts";
+import { Service, Mandarine } from "../../deps.ts";
 import { UserSession } from "../models/models.ts";
 import { AuthRepository, UsuarioRepository } from "../repositories/repositories.ts";
 import { authUtils, getCookies } from "../utils/utils.ts";
 
 @Service()
-export class AuthService {
+export class AuthService implements Mandarine.Security.Auth.UserDetailsService {
+
     constructor(private readonly authRepository: AuthRepository,
         private readonly usuarioRepository: UsuarioRepository) {}
+
+    // Not working in MandarineTS v2.3.2 -> Proposal v.2.3.3 (https://github.com/mandarineorg/mandarinets/issues/305)
+        public async loadUserByUsername(username: string) {
+        const user: Mandarine.Types.UserDetails = await this.usuarioRepository.getUsuarioByUsername(username);
+        return user;
+    }
 
     public async isAuth(cookie: string): Promise<UserSession | undefined> {
         const userSessionCookie = getCookies("userSession", cookie);

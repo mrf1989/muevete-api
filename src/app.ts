@@ -20,7 +20,7 @@ const services = [
 ];
 const middleware = [Middlewares.AutorizaAdmin];
 const repositories = [];
-const configurations = [];
+const configurations = [Controllers.WebMvcConfigurer];
 const components = [
     DBManagement,
     Repositories.EventoRepository,

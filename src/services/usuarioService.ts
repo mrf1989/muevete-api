@@ -27,6 +27,12 @@ export class UsuarioService {
 
         if (!usuario) {
             try {
+                nuevoUsuario.uid = username;
+                nuevoUsuario.roles = [nuevoUsuario.rol.toUpperCase()];
+                nuevoUsuario.accountExpired = false;
+                nuevoUsuario.accountLocked = false;
+                nuevoUsuario.credentialsExpired = false;
+                nuevoUsuario.enabled = true;
                 await this.usuarioRepository.createUsuario(nuevoUsuario);
                 return true;
             } catch (err) {

@@ -1,7 +1,7 @@
-import { Bson } from "../../deps.ts";
+import { Bson, Mandarine } from "../../deps.ts";
 import { Rol } from "./models.ts";
 
-export interface Usuario {
+export interface Usuario extends Mandarine.Security.Auth.UserDetails {
     _id?: Bson.ObjectID;
     username: string;
     password: string;
