@@ -19,7 +19,15 @@ export class UsuarioRepository {
   public async getAll(): Promise<Usuario[]> {
     const usuarios = await this.usuarios.find({}, {
       noCursorTimeout: false,
-      projection: { "password": 0, "session": 0 },
+      projection: {
+        "password": 0,
+        "uid": 0,
+        "roles": 0,
+        "accountExpired": 0,
+        "accountLocked": 0,
+        "credentialsExpired": 0,
+        "enabled": 0,
+      },
     }).toArray();
     if (!usuarios) throw new Error("No se encuentran usuarios");
     return usuarios;
@@ -28,7 +36,15 @@ export class UsuarioRepository {
   public async getUsuario(id: Bson.ObjectID): Promise<Usuario> {
     const usuario = await this.usuarios.findOne({ "_id": id }, {
       noCursorTimeout: false,
-      projection: { "password": 0, "session": 0 },
+      projection: {
+        "password": 0,
+        "uid": 0,
+        "roles": 0,
+        "accountExpired": 0,
+        "accountLocked": 0,
+        "credentialsExpired": 0,
+        "enabled": 0,
+      },
     });
     if (!usuario) throw new Error("Usuario no encontrado");
     return usuario;
@@ -45,10 +61,19 @@ export class UsuarioRepository {
   public async createUsuario(usuario: Usuario) {
     const res = await this.usuarios.insertOne(usuario);
     if (!res) throw new Error("Error en la creación del usuario");
+    return res;
   }
 
   public async updateUsuario<T extends Usuario>(id: Bson.ObjectID, payload: T) {
-    await this.usuarios.updateOne({ "_id": id }, { $set: payload });
+    const res = await this.usuarios.updateOne(
+      { "_id": id },
+      { $set: payload },
+      { upsert: true },
+    );
+    if (res.modifiedCount != 1) {
+      throw new Error("Error en la actualización del usuario");
+    }
+    return await this.getUsuario(id);
   }
 
   public async deleteUsuario(id: Bson.ObjectID) {

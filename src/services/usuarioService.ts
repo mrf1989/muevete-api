@@ -19,23 +19,24 @@ export class UsuarioService {
     }
   }
 
-  public async createUsuario(payload: Usuario): Promise<boolean> {
+  public async createUsuario(payload: Usuario): Promise<Bson.Document> {
     const encoder = new PasswordEncoder();
     const nuevoUsuario = payload;
     nuevoUsuario.password = encoder.encode(nuevoUsuario.password);
     const username = nuevoUsuario.username;
-    const usuario = await this.existeUsuario(username);
+    const existeUsuario = await this.existeUsuario(username);
 
-    if (!usuario) {
+    if (!existeUsuario) {
       try {
-        nuevoUsuario.uid = username;
+        const _id = new Bson.ObjectId();
+        nuevoUsuario._id = _id;
+        nuevoUsuario.uid = _id.toHexString();
         nuevoUsuario.roles = [nuevoUsuario.rol.toUpperCase()];
         nuevoUsuario.accountExpired = false;
         nuevoUsuario.accountLocked = false;
         nuevoUsuario.credentialsExpired = false;
         nuevoUsuario.enabled = true;
-        await this.usuarioRepository.createUsuario(nuevoUsuario);
-        return true;
+        return await this.usuarioRepository.createUsuario(nuevoUsuario);
       } catch (err) {
         throw err;
       }
@@ -47,14 +48,14 @@ export class UsuarioService {
   public async updateUsuario<T extends Usuario>(
     id: string,
     payload: T,
-  ): Promise<boolean> {
+  ): Promise<Usuario | undefined> {
     try {
       const usuario = await this.getUsuario(id);
-      await this.usuarioRepository.updateUsuario(
+      const res = await this.usuarioRepository.updateUsuario(
         usuario._id as Bson.ObjectID,
         payload,
       );
-      return true;
+      if (res) return res;
     } catch (err) {
       throw err;
     }
@@ -63,7 +64,10 @@ export class UsuarioService {
   public async deleteUsuario(id: string) {
     try {
       await this.usuarioRepository.deleteUsuario(new Bson.ObjectId(id));
-      return true;
+      return {
+        _id: id,
+        eliminado: true,
+      };
     } catch (err) {
       throw err;
     }

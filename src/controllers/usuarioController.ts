@@ -8,6 +8,7 @@ import {
   POST,
   PUT,
   RequestBody,
+  ResponseParam,
   RouteParam,
 } from "../../deps.ts";
 import { UsuarioService } from "../services/services.ts";
@@ -20,7 +21,6 @@ export class UsuarioController {
   ) {}
 
   @GET("/admin/usuarios")
-  @AllowOnly("hasRole('ADMIN')")
   public async getAllUsuarios() {
     try {
       return await this.usuarioService.getAllUsuarios();
@@ -35,33 +35,50 @@ export class UsuarioController {
   }
 
   @PUT("/usuarios/:id")
+  @AllowOnly("isAuthenticated()")
   public async updateUsuario<T extends Usuario>(
+    @AuthPrincipal() principal: Mandarine.Types.UserDetails,
     @RouteParam("id") id: string,
     @RequestBody() payload: T,
   ) {
-    try {
-      await this.usuarioService.updateUsuario(id, payload);
-    } catch (err) {
-      throw err;
+    if (principal.uid == id) {
+      try {
+        return await this.usuarioService.updateUsuario(id, payload);
+      } catch (err) {
+        throw err;
+      }
     }
+    throw new Error("Usuario no autorizado");
   }
 
   @POST("/usuarios")
   public async createUsuario(@RequestBody() payload: Usuario) {
     const usuario = payload as Usuario;
-    await this.usuarioService.createUsuario(usuario);
+    return await this.usuarioService.createUsuario(usuario);
   }
 
   @DELETE("/admin/usuarios/:id")
   @AllowOnly("hasRole('ADMIN')")
   public async deleteUsuario(@RouteParam("id") id: string) {
-    await this.usuarioService.deleteUsuario(id);
+    const res = await this.usuarioService.deleteUsuario(id);
+    return JSON.stringify(res);
   }
 
   @GET("/login-success")
   public loginUsuarioSuccess(
     @AuthPrincipal() usuario: Mandarine.Types.UserDetails,
+    @ResponseParam() response: Response,
   ) {
-    console.log(usuario.uid);
+    console.log(`Login success: ${usuario.username} (${usuario.uid}). Hello!`);
+    response.headers.set("Content-Type", "application/json");
+    return JSON.stringify({
+      id: usuario.uid,
+      username: usuario.username,
+    });
+  }
+
+  @GET("/logout-success")
+  public logoutUsuarioSuccess() {
+    console.log(`Logout success. Bye!`);
   }
 }
