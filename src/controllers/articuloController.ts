@@ -44,7 +44,7 @@ export class ArticuloController {
     try {
       const articulo = payload as Articulo;
       articulo.usuario_id = new Bson.ObjectId(articulo.usuario_id);
-      await this.articuloService.createArticulo(articulo);
+      return await this.articuloService.createArticulo(articulo);
     } catch (err) {
       throw err;
     }
@@ -57,7 +57,7 @@ export class ArticuloController {
     @RequestBody() payload: T,
   ) {
     try {
-      await this.articuloService.updateArticulo(id, payload);
+      return await this.articuloService.updateArticulo(id, payload);
     } catch (err) {
       throw err;
     }
@@ -69,7 +69,7 @@ export class ArticuloController {
     @RouteParam("id") id: string,
   ) {
     try {
-      await this.articuloService.deleteArticulo(id);
+      return await this.articuloService.deleteArticulo(id);
     } catch (err) {
       throw err;
     }

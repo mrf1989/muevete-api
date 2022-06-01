@@ -9,6 +9,7 @@ import { Articulo } from "../../src/models/models.ts";
 Rhum.testPlan("Testing Articulo Service", () => {
   let dbManagement: Stubbed<DBManagement>;
   const articulo: Articulo = {
+    _id: new Bson.ObjectId("6297c7784b0dd585cea1163c"),
     titulo: "Artículo de prueba",
     subtitulo: "El subtítulo del artículo de prueba",
     fecha: new Date("2022-03-31"),
@@ -30,15 +31,21 @@ Rhum.testPlan("Testing Articulo Service", () => {
     });
 
     Rhum.testCase("Permite crear un artículo", async () => {
-      articuloRepository.stub("createArticulo", () => {});
+      articuloRepository.stub("createArticulo", () => {
+        return "6297c7784b0dd585cea1163c";
+      });
 
       const articuloService = new ArticuloService(articuloRepository);
       const res = await articuloService.createArticulo(articulo);
-      asserts.assertEquals(res, true);
+      asserts.assertEquals(res, "6297c7784b0dd585cea1163c");
     });
 
     Rhum.testCase("Actualiza un artículo", async () => {
-      articuloRepository.stub("updateArticulo", () => {});
+      articuloRepository.stub("updateArticulo", () => {
+        const articuloEditado = articulo;
+        articuloEditado.titulo = "Título editado";
+        return articuloEditado;
+      });
       articuloRepository.stub("getArticulo", () => {
         return articulo;
       });
@@ -50,7 +57,7 @@ Rhum.testPlan("Testing Articulo Service", () => {
         "6235d572c077516a2dffa8ff",
         articuloEditado,
       );
-      asserts.assertEquals(res, true);
+      asserts.assertEquals(res, articuloEditado);
     });
 
     Rhum.testCase("Listar todos los artículos", async () => {

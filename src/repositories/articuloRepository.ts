@@ -19,7 +19,7 @@ export class ArticuloRepository {
   public async getAll(): Promise<Articulo[]> {
     const articulos = await this.articulos.find({}, { noCursorTimeout: false })
       .toArray();
-    if (!articulos) throw new Error("No se encuentran artículos");
+    if (!articulos.length) throw new Error("No se encuentran artículos");
     return articulos;
   }
 
@@ -31,19 +31,30 @@ export class ArticuloRepository {
     return articulo;
   }
 
-  public async createArticulo(articulo: Articulo) {
+  public async createArticulo(articulo: Articulo): Promise<Bson.Document> {
     const res = await this.articulos.insertOne(articulo);
     if (!res) throw new Error("Error en la creación del artículo");
+    return res;
   }
 
   public async updateArticulo<T extends Articulo>(
     id: Bson.ObjectID,
     payload: T,
   ) {
-    await this.articulos.updateOne({ "_id": id }, { $set: payload });
+    const res = await this.articulos.updateOne(
+      { "_id": id },
+      { $set: payload },
+      { upsert: true },
+    );
+    if (res.modifiedCount != 1) {
+      throw new Error("Error en la actualización del artículo");
+    }
+    return await this.getArticulo(id);
   }
 
   public async deleteArticulo(id: Bson.ObjectID) {
-    await this.articulos.deleteOne({ "_id": id });
+    const res = await this.articulos.deleteOne({ "_id": id });
+    if (!res) throw new Error("Error en la eliminación del artículo");
+    return res;
   }
 }
