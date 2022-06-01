@@ -4,10 +4,10 @@ import { Esfuerzo } from "../models/models.ts";
 
 @Controller("/api")
 export class EsfuerzoController {
-    constructor(private readonly esfuerzoService: EsfuerzoService) {}
+  constructor(private readonly esfuerzoService: EsfuerzoService) {}
 
-    @POST("/esfuerzo")
-    public async addEsfuerzo(@RequestBody() payload: Esfuerzo) {
-        await this.esfuerzoService.createEsfuerzo(payload);
-    }
+  @POST("/esfuerzo")
+  public async addEsfuerzo(@RequestBody() payload: Esfuerzo) {
+    await this.esfuerzoService.createEsfuerzo(payload);
+  }
 }
