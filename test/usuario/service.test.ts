@@ -73,10 +73,12 @@ Rhum.testPlan("Testing Usuario Service", () => {
         return user;
       });
 
-      usuarioRepository.stub("updateUsuario", async () => {});
+      usuarioRepository.stub("updateUsuario", () => {
+        return user;
+      });
 
       const usuarioService = new UsuarioService(usuarioRepository);
-      let res = false;
+      let res: Usuario | undefined;
 
       if (user._id) {
         res = await usuarioService.updateUsuario(
@@ -85,7 +87,7 @@ Rhum.testPlan("Testing Usuario Service", () => {
         );
       }
 
-      asserts.assertEquals(res, true);
+      asserts.assertEquals(res, user);
     });
 
     Rhum.testCase("No actualiza información si no existe el usuario", () => {
@@ -122,8 +124,13 @@ Rhum.testPlan("Testing Usuario Service", () => {
       });
 
       const usuarioService = new UsuarioService(usuarioRepository);
-      const res = await usuarioService.deleteUsuario(user._id!.id);
-      asserts.assertEquals(res, true);
+      const res = await usuarioService.deleteUsuario(
+        "62358b4fac70f4b258326c48",
+      );
+      asserts.assertEquals(res, {
+        _id: new Bson.ObjectID("62358b4fac70f4b258326c48").toHexString(),
+        eliminado: true,
+      });
     });
 
     Rhum.testCase("Lanza error si se elimina un usuario que no existe", () => {
