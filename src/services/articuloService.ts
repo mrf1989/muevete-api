@@ -7,7 +7,11 @@ export class ArticuloService {
   constructor(private readonly articuloRepository: ArticuloRepository) {}
 
   public async getAllArticulos(): Promise<Articulo[]> {
-    return await this.articuloRepository.getAll();
+    try {
+      return await this.articuloRepository.getAll();
+    } catch (err) {
+      throw err;
+    }
   }
 
   public async getArticulo(id: string): Promise<Articulo> {
@@ -18,10 +22,9 @@ export class ArticuloService {
     }
   }
 
-  public async createArticulo(payload: Articulo): Promise<boolean> {
+  public async createArticulo(payload: Articulo): Promise<Bson.Document> {
     try {
-      await this.articuloRepository.createArticulo(payload);
-      return true;
+      return await this.articuloRepository.createArticulo(payload);
     } catch (err) {
       throw err;
     }
@@ -30,14 +33,14 @@ export class ArticuloService {
   public async updateArticulo<T extends Articulo>(
     id: string,
     payload: T,
-  ): Promise<boolean> {
+  ): Promise<Articulo> {
     try {
       const articulo = await this.getArticulo(id);
-      await this.articuloRepository.updateArticulo(
+      const res = await this.articuloRepository.updateArticulo(
         articulo._id as Bson.ObjectID,
         payload,
       );
-      return true;
+      return res;
     } catch (err) {
       throw err;
     }
@@ -46,7 +49,10 @@ export class ArticuloService {
   public async deleteArticulo(id: string) {
     try {
       await this.articuloRepository.deleteArticulo(new Bson.ObjectId(id));
-      return true;
+      return {
+        _id: id,
+        eliminado: true,
+      };
     } catch (err) {
       throw err;
     }

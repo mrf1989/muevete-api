@@ -21,6 +21,7 @@ export class UsuarioController {
   ) {}
 
   @GET("/admin/usuarios")
+  @AllowOnly("hasRole('ADMIN')")
   public async getAllUsuarios() {
     try {
       return await this.usuarioService.getAllUsuarios();
@@ -31,7 +32,11 @@ export class UsuarioController {
 
   @GET("/usuarios/:id")
   public async getUsuario(@RouteParam("id") id: string) {
-    return await this.usuarioService.getUsuario(id);
+    try {
+      return await this.usuarioService.getUsuario(id);
+    } catch (err) {
+      throw err;
+    }
   }
 
   @PUT("/usuarios/:id")
