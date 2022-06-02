@@ -20,7 +20,7 @@ export class EsfuerzoRepository {
     const esfuerzos = await this.esfuerzos.find(filter, {
       noCursorTimeout: false,
     }).toArray();
-    if (!esfuerzos) throw new Error("No se han encontrado esfuerzos");
+    if (!esfuerzos.length) throw new Error("No se han encontrado esfuerzos");
     return esfuerzos;
   }
 
@@ -32,9 +32,10 @@ export class EsfuerzoRepository {
     return esfuerzo;
   }
 
-  public async createEsfuerzo(esfuerzo: Esfuerzo) {
+  public async createEsfuerzo(esfuerzo: Esfuerzo): Promise<Bson.Document> {
     const res = await this.esfuerzos.insertOne(esfuerzo);
     if (!res) throw new Error("Error en la creación del esfuerzo");
+    return res;
   }
 
   public async getEsfuerzosTotales(dorsales: string[]) {

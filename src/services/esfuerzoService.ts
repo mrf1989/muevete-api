@@ -17,15 +17,23 @@ export class EsfuerzoService {
   public async getAllEsfuerzos(
     _filtros: Map<string, string>,
   ): Promise<Esfuerzo[]> {
-    const filter: Bson.Document = {};
-    return await this.esfuerzoRepository.getAll(filter);
+    try {
+      const filter: Bson.Document = {};
+      return await this.esfuerzoRepository.getAll(filter);
+    } catch (err) {
+      throw err;
+    }
   }
 
   public async getEsfuerzo(id: string): Promise<Esfuerzo> {
-    return await this.esfuerzoRepository.getEsfuerzo(new Bson.ObjectId(id));
+    try {
+      return await this.esfuerzoRepository.getEsfuerzo(new Bson.ObjectId(id));
+    } catch (err) {
+      throw err;
+    }
   }
 
-  public async createEsfuerzo(payload: Esfuerzo): Promise<boolean> {
+  public async createEsfuerzo(payload: Esfuerzo): Promise<Bson.Document> {
     const esfuerzo: Esfuerzo = payload as Esfuerzo;
     const dorsal = await this.dorsalRepository.getDorsal(esfuerzo.dorsal_id.id);
     const eventoId = dorsal.evento_id;
@@ -39,8 +47,7 @@ export class EsfuerzoService {
     if (evento.objetivoKm >= esfuerzosTotalesEnEvento + esfuerzo.numKm) {
       if (evento.modalidad.includes(esfuerzo.modalidad)) {
         try {
-          await this.esfuerzoRepository.createEsfuerzo(esfuerzo);
-          return true;
+          return await this.esfuerzoRepository.createEsfuerzo(esfuerzo);
         } catch (err) {
           throw err;
         }

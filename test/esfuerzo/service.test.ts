@@ -42,6 +42,7 @@ Rhum.testPlan("Testing Esfuerzo Service", () => {
     evento_id: new Bson.ObjectID("6235d572c077516a2dffa823"),
   };
   const esfuerzo: Esfuerzo = {
+    _id: new Bson.ObjectId("5535d572c077516a2dffa836"),
     numKm: 85,
     comentario: "Para ponerme a prueba!",
     modalidad: "bicicleta",
@@ -79,7 +80,9 @@ Rhum.testPlan("Testing Esfuerzo Service", () => {
       esfuerzoRepository.stub("getEsfuerzosTotales", () => {
         return 2456;
       });
-      esfuerzoRepository.stub("createEsfuerzo", () => {});
+      esfuerzoRepository.stub("createEsfuerzo", () => {
+        return new Bson.ObjectId("5535d572c077516a2dffa836");
+      });
 
       const esfuerzoService = new EsfuerzoService(
         esfuerzoRepository,
@@ -87,7 +90,7 @@ Rhum.testPlan("Testing Esfuerzo Service", () => {
         eventoRepository,
       );
       const res = await esfuerzoService.createEsfuerzo(esfuerzo);
-      asserts.assertEquals(res, true);
+      asserts.assertEquals(res, new Bson.ObjectId("5535d572c077516a2dffa836"));
     });
 
     Rhum.testCase(
