@@ -7,7 +7,7 @@ import { Evento } from "../../src/models/models.ts";
 Rhum.testPlan("Testing Evento Service", () => {
   let dbManagement: Stubbed<DBManagement>;
   const evento: Evento = {
-    _id: new Bson.ObjectID("6235d572c077516a2dffa8ff"),
+    _id: new Bson.ObjectId("6235d572c077516a2dffa8ff"),
     nombre: "Caminar para vencer",
     descripcion:
       "Descripción de la actividad deportiva y de la enfermedad contra la que se lucha",
@@ -31,11 +31,13 @@ Rhum.testPlan("Testing Evento Service", () => {
     });
 
     Rhum.testCase("Permite crear un evento", async () => {
-      eventoRepository.stub("createEvento", () => {});
+      eventoRepository.stub("createEvento", () => {
+        return evento._id;
+      });
 
       const eventoService = new EventoService(eventoRepository);
       const res = await eventoService.createEvento(evento);
-      asserts.assertEquals(res, true);
+      asserts.assertEquals(res, new Bson.ObjectId("6235d572c077516a2dffa8ff"));
     });
 
     Rhum.testCase("Valida la duración mínima de un evento", () => {
