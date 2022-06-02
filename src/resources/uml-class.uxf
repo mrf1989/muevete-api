@@ -6,7 +6,7 @@ objetivoKm: number
 fechaCreacion: Date
 fechaInicio: Date
 fechaFin: Date
-modalidades: Modalidad</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>140</x><y>297</y><w>150</w><h>60</h></coordinates><panel_attributes>Dorsal
+modalidad: string[]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>140</x><y>297</y><w>150</w><h>60</h></coordinates><panel_attributes>Dorsal
 --
 num: number
 lema: string</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>140</x><y>467</y><w>150</w><h>90</h></coordinates><panel_attributes>Esfuerzo
@@ -14,7 +14,7 @@ lema: string</panel_attributes><additional_attributes></additional_attributes></
 numKm: number
 fecha: Date
 comentario: string
-modalidad: Modalidad</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>730</x><y>287</y><w>150</w><h>140</h></coordinates><panel_attributes>Artículo
+modalidad: string</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>730</x><y>287</y><w>150</w><h>140</h></coordinates><panel_attributes>Artículo
 --
 titulo: string
 subtítulo: string
@@ -22,30 +22,17 @@ fecha: Date
 cuerpo: string
 categoria: string
 referencia: string
-enlaceImagen: string</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>580</x><y>497</y><w>150</w><h>60</h></coordinates><panel_attributes>Newsletter
---
-titulo: string
-fecha: Date</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>430</x><y>197</y><w>150</w><h>170</h></coordinates><panel_attributes>Usuario
+enlaceImagen: string</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>430</x><y>197</y><w>150</w><h>170</h></coordinates><panel_attributes>Usuario
 --
 username: string
 password: string
-rol: Rol
+rol: string
 nombre: string
 apellidos: string
 fechaNacimiento: Date
 email: string
 telefono: string
-ciudad: string</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>730</x><y>70</y><w>150</w><h>70</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
-Rol
---
-Admin
-Voluntario</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>730</x><y>150</y><w>150</w><h>100</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
-Modalidad
---
-Caminata
-Carrera
-Bicicleta
-Natacion</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>200</y><w>80</w><h>120</h></coordinates><panel_attributes>lt=-
+ciudad: string</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>200</y><w>80</w><h>120</h></coordinates><panel_attributes>lt=-
 m1=1
 m2=*
 inscrito &gt;</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>280</x><y>320</y><w>170</w><h>50</h></coordinates><panel_attributes>lt=-
@@ -60,6 +47,4 @@ m2=*
 asignado &gt;</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>570</x><y>320</y><w>180</w><h>50</h></coordinates><panel_attributes>lt=-
 m1=1
 m2=*
-&lt; publicadoPor</panel_attributes><additional_attributes>10;20;160;20</additional_attributes></element><element><id>Relation</id><coordinates><x>720</x><y>420</y><w>110</w><h>140</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-
-</panel_attributes><additional_attributes>10;110;90;110;90;10</additional_attributes></element></diagram>
+&lt; publicadoPor</panel_attributes><additional_attributes>10;20;160;20</additional_attributes></element></diagram>
