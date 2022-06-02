@@ -40,7 +40,9 @@ Rhum.testPlan("Testing Dorsal Service", () => {
       dorsalRepository.stub("getAll", () => {
         return [];
       });
-      dorsalRepository.stub("createDorsal", () => {});
+      dorsalRepository.stub("createDorsal", () => {
+        return new Bson.ObjectID("6235d572c077516a2dffa8ff");
+      });
 
       const dorsalService = new DorsalService(
         dorsalRepository,
@@ -52,7 +54,7 @@ Rhum.testPlan("Testing Dorsal Service", () => {
         usuario_id: "6235d572c077516a2dffa836",
         evento_id: "6235d572c077516a2dffa823",
       } as unknown as Dorsal);
-      asserts.assertEquals(res, true);
+      asserts.assertEquals(res, new Bson.ObjectID("6235d572c077516a2dffa8ff"));
     });
   });
 });
