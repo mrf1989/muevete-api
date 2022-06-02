@@ -19,7 +19,7 @@ export class EventoRepository {
   public async getAll(filtro: Bson.Document): Promise<Evento[]> {
     const eventos = await this.eventos.find(filtro, { noCursorTimeout: false })
       .toArray();
-    if (!eventos) throw new Error("No se encuentran eventos");
+    if (!eventos.length) throw new Error("No se encuentran eventos");
     return eventos;
   }
 
@@ -34,15 +34,23 @@ export class EventoRepository {
   public async createEvento(evento: Evento) {
     const res = await this.eventos.insertOne(evento);
     if (!res) throw new Error("Error en la creación del evento");
+    return res;
   }
 
   public async updateEvento<T extends Evento>(
     id: Bson.ObjectID,
     payload: T,
-  ): Promise<boolean> {
+  ): Promise<Evento> {
     try {
-      await this.eventos.updateOne({ "_id": id }, { $set: payload });
-      return true;
+      const res = await this.eventos.updateOne(
+        { "_id": id },
+        { $set: payload },
+        { upsert: true },
+      );
+      if (res.modifiedCount != 1) {
+        throw new Error("Error en la actualización del evento");
+      }
+      return await this.getEvento(id);
     } catch (err) {
       throw err;
     }
@@ -50,7 +58,9 @@ export class EventoRepository {
 
   public async deleteEvento(id: Bson.ObjectID) {
     try {
-      return await this.eventos.deleteOne({ "_id": id });
+      const res = await this.eventos.deleteOne({ "_id": id });
+      if (!res) throw new Error("Error en la eliminación del artículo");
+      return res;
     } catch (err) {
       throw err;
     }
