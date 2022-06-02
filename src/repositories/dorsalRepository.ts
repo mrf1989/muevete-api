@@ -22,7 +22,7 @@ export class DorsalRepository {
     const dorsales = await this.dorsales.find(filter, {
       noCursorTimeout: false,
     }).toArray();
-    if (!dorsales) throw ERROR_NOT_FOUND;
+    if (!dorsales.length) throw ERROR_NOT_FOUND;
     return dorsales;
   }
 
@@ -37,15 +37,23 @@ export class DorsalRepository {
   public async createDorsal(dorsal: Dorsal) {
     const res = await this.dorsales.insertOne(dorsal);
     if (!res) throw new Error("Error en la creación del dorsal");
+    return res;
   }
 
   public async updateDorsal<T extends Dorsal>(
     id: Bson.ObjectID,
     payload: T,
-  ): Promise<boolean> {
+  ): Promise<Dorsal> {
     try {
-      await this.dorsales.updateOne({ "_id": id }, { $set: payload });
-      return true;
+      const res = await this.dorsales.updateOne(
+        { "_id": id },
+        { $set: payload },
+        { upsert: true },
+      );
+      if (res.modifiedCount != 1) {
+        throw new Error("Error en la actualización del dorsal");
+      }
+      return await this.getDorsal(id);
     } catch (err) {
       throw err;
     }

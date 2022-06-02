@@ -52,8 +52,9 @@ export class UsuarioController {
       } catch (err) {
         throw err;
       }
+    } else {
+      throw new Error("Usuario no autorizado");
     }
-    throw new Error("Usuario no autorizado");
   }
 
   @POST("/usuarios")
