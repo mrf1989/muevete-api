@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "t0**"
+      - "fix-**"
 
 jobs:
   linter:
@@ -20,6 +21,9 @@ jobs:
 
       - name: Cache dependencies
         run: deno cache --unstable ./deps.ts
+
+      - name: Run formatter
+        run: deno fmt
         
       - name: Run linter
         run: deno lint
