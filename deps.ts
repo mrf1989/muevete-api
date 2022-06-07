@@ -20,6 +20,7 @@ export {
   Service,
   Session,
 } from "https://raw.githubusercontent.com/mrf1989/mandarinets/pr-v2.3.3/mod.ts";
+//} from "../mandarinets/mod.ts";
 
 export { createHash } from "https://deno.land/std@0.129.0/hash/mod.ts";
 export {
