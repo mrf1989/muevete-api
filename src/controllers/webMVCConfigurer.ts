@@ -19,11 +19,9 @@ export class WebMvcConfigurer extends Mandarine.Native.WebMvcConfigurer {
   ) {
     provider
       .loginProcessingUrl("/api/login")
-      //.loginSuccessUrl("/api/login-success")
       .loginUsernameParameter("username")
       .loginPasswordParameter("password")
-      .logoutUrl("/api/logout")
-      //.logoutSuccessUrl("/api/logout-success");
+      .logoutUrl("/api/logout");
     return provider;
   }
 }

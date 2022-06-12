@@ -1,0 +1,2 @@
+{"_id":{"$oid":"62a5e0f06a4de707c6384cde"},"numKm":10,"fecha":{"$date":"2022-06-02T16:09:55.473Z"},"comentario":"Lo he pasado muy bien haciendo deporte.","modalidad":"carrera","usuario_id":{"$oid":"6298d9c2f1b0f0495e061f15"},"dorsal_id":{"$oid":"62a5db536a4de707c6384cda"}}
+{"_id":{"$oid":"62a5e1036a4de707c6384cdf"},"numKm":5,"fecha":{"$date":"2022-06-03T10:31:55.473Z"},"comentario":"Apoyando un día más a la causa solidaria.","modalidad":"carrera","usuario_id":{"$oid":"6298d9c2f1b0f0495e061f15"},"dorsal_id":{"$oid":"62a5db536a4de707c6384cda"}}

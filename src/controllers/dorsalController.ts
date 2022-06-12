@@ -2,6 +2,7 @@ import {
   AllowOnly,
   AuthPrincipal,
   Controller,
+  GET,
   Mandarine,
   POST,
   PUT,
@@ -48,6 +49,15 @@ export class DorsalController {
       }
     } else {
       throw new Error("Usuario no autorizado");
+    }
+  }
+
+  @GET("/dorsales/:id")
+  public async getDorsalesPorUsuario(@RouteParam("id") id: string): Promise<Dorsal[]> {
+    try {
+      return await this.dorsalService.getDorsalesPorUsuario(id);
+    } catch (err) {
+      throw err;
     }
   }
 }
