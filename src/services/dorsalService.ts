@@ -101,4 +101,13 @@ export class DorsalService {
       throw err;
     }
   }
+
+  public async getDorsalesPorUsuario(id: string): Promise<Dorsal[]> {
+    try {
+      const usuarioId = new Bson.ObjectId(id);
+      return await this.dorsalRepository.getAll({ "usuario_id": usuarioId });
+    } catch (err) {
+      throw err;
+    }
+  }
 }

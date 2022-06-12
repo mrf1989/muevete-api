@@ -62,4 +62,13 @@ export class EsfuerzoService {
       );
     }
   }
+
+  public async getEsfuerzosPorDorsal(id: string): Promise<Esfuerzo[]> {
+    try {
+      const dorsalId = new Bson.ObjectId(id);
+      return await this.esfuerzoRepository.getAll({ "dorsal_id": dorsalId });
+    } catch (err) {
+      throw err;
+    }
+  }
 }

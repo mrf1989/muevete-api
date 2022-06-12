@@ -2,9 +2,11 @@ import {
   AllowOnly,
   AuthPrincipal,
   Controller,
+  GET,
   Mandarine,
   POST,
   RequestBody,
+  RouteParam,
 } from "../../deps.ts";
 import { EsfuerzoService } from "../services/services.ts";
 import { Esfuerzo } from "../models/models.ts";
@@ -29,6 +31,15 @@ export class EsfuerzoController {
       });
     } else {
       throw new Error("Usuario no autorizado");
+    }
+  }
+
+  @GET("/esfuerzos/:id")
+  public async getEsfuerzosPorDorsal(@RouteParam("id") id: string): Promise<Esfuerzo[]> {
+    try {
+      return await this.esfuerzoService.getEsfuerzosPorDorsal(id);
+    } catch (err) {
+      throw err;
     }
   }
 }

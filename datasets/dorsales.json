@@ -1,0 +1,4 @@
+{"_id":{"$oid":"62a5db536a4de707c6384cda"},"num":1,"lema":"Vamos con todo!!","usuario_id":{"$oid":"6298d9c2f1b0f0495e061f15"},"evento_id":{"$oid":"6298e002f1b0f0495e061f1f"}}
+{"_id":{"$oid":"62a5db576a4de707c6384cdb"},"num":1,"lema":"El reto más importante de mi vida","usuario_id":{"$oid":"6298d9c2f1b0f0495e061f15"},"evento_id":{"$oid":"6298e084f1b0f0495e061f20"}}
+{"_id":{"$oid":"62a5db586a4de707c6384cdc"},"num":1,"lema":"Muévete!!!","usuario_id":{"$oid":"6298d9c2f1b0f0495e061f15"},"evento_id":{"$oid":"6298e0d3f1b0f0495e061f21"}}
+{"_id":{"$oid":"62a5db746a4de707c6384cdd"},"num":1,"lema":"El objetivo del año, mi mayor reto","usuario_id":{"$oid":"6298d9c2f1b0f0495e061f15"},"evento_id":{"$oid":"6298e183f1b0f0495e061f22"}}
