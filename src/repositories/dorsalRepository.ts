@@ -22,7 +22,6 @@ export class DorsalRepository {
     const dorsales = await this.dorsales.find(filter, {
       noCursorTimeout: false,
     }).toArray();
-    if (!dorsales.length) throw ERROR_NOT_FOUND;
     return dorsales;
   }
 

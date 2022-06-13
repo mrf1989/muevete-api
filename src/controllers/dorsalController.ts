@@ -1,6 +1,7 @@
 import {
   AllowOnly,
   AuthPrincipal,
+  Bson,
   Controller,
   GET,
   Mandarine,
@@ -23,6 +24,8 @@ export class DorsalController {
     @AuthPrincipal() principal: Mandarine.Types.UserDetails,
   ) {
     const dorsal = payload as Dorsal;
+    dorsal.usuario_id = new Bson.ObjectId(dorsal.usuario_id);
+    dorsal.evento_id = new Bson.ObjectId(dorsal.evento_id);
     if (principal.uid == dorsal.usuario_id.toHexString()) {
       try {
         return await this.dorsalService.createDorsal(dorsal);

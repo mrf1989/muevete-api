@@ -45,7 +45,7 @@ export class DorsalService {
     const eventosId = (await this.dorsalRepository.getAll({
       "usuario_id": { $eq: dorsal.usuario_id },
     }))
-      .map((dorsal) => dorsal.evento_id.toHexString());
+      .map((dorsal: Dorsal) => new Bson.ObjectId(dorsal.evento_id).toHexString());
     let eventosIncompletos = 0;
 
     if (eventosId.length >= MAX_INSCRIPCIONES) {
@@ -58,7 +58,7 @@ export class DorsalService {
           const dorsales = (await this.dorsalRepository.getAll({
             "evento_id": { $eq: evento._id! },
           }))
-            .map((dorsal) => dorsal._id!.toHexString());
+            .map((dorsal: Dorsal) => dorsal._id!.toHexString());
           const esfuerzosTotalesEnEvento = await this.esfuerzoRepository
             .getEsfuerzosTotales(dorsales);
           if (esfuerzosTotalesEnEvento < evento.objetivoKm) {
