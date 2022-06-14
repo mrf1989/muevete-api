@@ -1,7 +1,9 @@
 import {
   AllowOnly,
   AuthPrincipal,
+  Bson,
   Controller,
+  GET,
   Mandarine,
   POST,
   PUT,
@@ -22,6 +24,8 @@ export class DorsalController {
     @AuthPrincipal() principal: Mandarine.Types.UserDetails,
   ) {
     const dorsal = payload as Dorsal;
+    dorsal.usuario_id = new Bson.ObjectId(dorsal.usuario_id);
+    dorsal.evento_id = new Bson.ObjectId(dorsal.evento_id);
     if (principal.uid == dorsal.usuario_id.toHexString()) {
       try {
         return await this.dorsalService.createDorsal(dorsal);
@@ -48,6 +52,17 @@ export class DorsalController {
       }
     } else {
       throw new Error("Usuario no autorizado");
+    }
+  }
+
+  @GET("/dorsales/:id")
+  public async getDorsalesPorUsuario(
+    @RouteParam("id") id: string,
+  ): Promise<Dorsal[]> {
+    try {
+      return await this.dorsalService.getDorsalesPorUsuario(id);
+    } catch (err) {
+      throw err;
     }
   }
 }

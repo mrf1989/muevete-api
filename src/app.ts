@@ -7,24 +7,30 @@ import * as Repositories from "./repositories/repositories.ts";
 import { DBManagement } from "./database/mongodb.ts";
 
 const controllers = [
-  Controllers.UsuarioController,
-  Controllers.EventoController,
   Controllers.ArticuloController,
+  Controllers.DorsalController,
+  Controllers.EsfuerzoController,
+  Controllers.EventoController,
+  Controllers.UsuarioController,
 ];
 const services = [
+  Services.ArticuloService,
+  Services.AuthService,
+  Services.EsfuerzoService,
+  Services.DorsalService,
   Services.EventoService,
   Services.UsuarioService,
-  Services.AuthService,
-  Services.ArticuloService,
 ];
 const middleware = [];
 const repositories = [];
 const configurations = [Controllers.WebMvcConfigurer];
 const components = [
   DBManagement,
+  Repositories.ArticuloRepository,
+  Repositories.DorsalRepository,
+  Repositories.EsfuerzoRepository,
   Repositories.EventoRepository,
   Repositories.UsuarioRepository,
-  Repositories.ArticuloRepository,
 ];
 const otherModules = [];
 

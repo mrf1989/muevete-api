@@ -35,7 +35,7 @@ export class EsfuerzoService {
 
   public async createEsfuerzo(payload: Esfuerzo): Promise<Bson.Document> {
     const esfuerzo: Esfuerzo = payload as Esfuerzo;
-    const dorsal = await this.dorsalRepository.getDorsal(esfuerzo.dorsal_id.id);
+    const dorsal = await this.dorsalRepository.getDorsal(esfuerzo.dorsal_id);
     const eventoId = dorsal.evento_id;
     const evento = await this.eventoRepository.getEvento(eventoId);
     const dorsales =
@@ -60,6 +60,15 @@ export class EsfuerzoService {
       throw new Error(
         "No pueden realizarse más esfuerzos para un evento completado",
       );
+    }
+  }
+
+  public async getEsfuerzosPorDorsal(id: string): Promise<Esfuerzo[]> {
+    try {
+      const dorsalId = new Bson.ObjectId(id);
+      return await this.esfuerzoRepository.getAll({ "dorsal_id": dorsalId });
+    } catch (err) {
+      throw err;
     }
   }
 }
