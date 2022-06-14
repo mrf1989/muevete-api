@@ -35,7 +35,9 @@ export class EsfuerzoController {
   }
 
   @GET("/esfuerzos/:id")
-  public async getEsfuerzosPorDorsal(@RouteParam("id") id: string): Promise<Esfuerzo[]> {
+  public async getEsfuerzosPorDorsal(
+    @RouteParam("id") id: string,
+  ): Promise<Esfuerzo[]> {
     try {
       return await this.esfuerzoService.getEsfuerzosPorDorsal(id);
     } catch (err) {

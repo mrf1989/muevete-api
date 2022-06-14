@@ -71,6 +71,4 @@ export class EsfuerzoService {
       throw err;
     }
   }
-
-  public async getEsfuerzoTotalEvento()
 }

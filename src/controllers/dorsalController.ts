@@ -56,7 +56,9 @@ export class DorsalController {
   }
 
   @GET("/dorsales/:id")
-  public async getDorsalesPorUsuario(@RouteParam("id") id: string): Promise<Dorsal[]> {
+  public async getDorsalesPorUsuario(
+    @RouteParam("id") id: string,
+  ): Promise<Dorsal[]> {
     try {
       return await this.dorsalService.getDorsalesPorUsuario(id);
     } catch (err) {
