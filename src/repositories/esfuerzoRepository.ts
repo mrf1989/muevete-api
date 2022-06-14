@@ -39,9 +39,10 @@ export class EsfuerzoRepository {
   }
 
   public async getEsfuerzosTotales(dorsales: string[]) {
+    const dorsalesId = dorsales.map((id) => new Bson.ObjectID(id));
     let acum = 0;
     await this.esfuerzos.find({
-      "dorsal_id": { $in: dorsales },
+      "dorsal_id": { $in: dorsalesId },
     }, { noCursorTimeout: false }).map((esfuerzo) =>
       acum = acum + esfuerzo.numKm
     );

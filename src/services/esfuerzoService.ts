@@ -35,7 +35,7 @@ export class EsfuerzoService {
 
   public async createEsfuerzo(payload: Esfuerzo): Promise<Bson.Document> {
     const esfuerzo: Esfuerzo = payload as Esfuerzo;
-    const dorsal = await this.dorsalRepository.getDorsal(esfuerzo.dorsal_id.id);
+    const dorsal = await this.dorsalRepository.getDorsal(esfuerzo.dorsal_id);
     const eventoId = dorsal.evento_id;
     const evento = await this.eventoRepository.getEvento(eventoId);
     const dorsales =

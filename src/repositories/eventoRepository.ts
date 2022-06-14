@@ -69,7 +69,7 @@ export class EventoRepository {
   public async getEventos(ids: string[]) {
     const eventosId = ids.map((id) => new Bson.ObjectID(id));
     const eventos = await this.eventos.find({
-      "_id:": { $in: eventosId },
+      "_id": { $in: eventosId },
     }, { noCursorTimeout: false }).toArray();
     return eventos;
   }

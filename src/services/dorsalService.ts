@@ -4,7 +4,7 @@ import {
   EsfuerzoRepository,
   EventoRepository,
 } from "../repositories/repositories.ts";
-import { Dorsal, Evento } from "../models/models.ts";
+import { Dorsal } from "../models/models.ts";
 
 const MAX_INSCRIPCIONES = 3;
 
@@ -37,39 +37,14 @@ export class DorsalService {
 
   public async createDorsal(payload: Dorsal): Promise<Bson.Document> {
     const dorsal: Dorsal = payload as Dorsal;
-    const usuarioParticipante = (await this.dorsalRepository
-      .getAll({
-        "usuario_id": dorsal.usuario_id,
-        "evento_id": dorsal.evento_id,
-      })).length;
-    const eventosId = (await this.dorsalRepository.getAll({
-      "usuario_id": { $eq: dorsal.usuario_id },
-    }))
-      .map((dorsal) => dorsal.evento_id.toHexString());
-    let eventosIncompletos = 0;
-
-    if (eventosId.length >= MAX_INSCRIPCIONES) {
-      const eventos = (await this.eventoRepository.getEventos(eventosId))
-        .entries();
-
-      while (eventosIncompletos < 3) {
-        const evento: Evento = eventos.next().value;
-        if (evento) {
-          const dorsales = (await this.dorsalRepository.getAll({
-            "evento_id": { $eq: evento._id! },
-          }))
-            .map((dorsal) => dorsal._id!.toHexString());
-          const esfuerzosTotalesEnEvento = await this.esfuerzoRepository
-            .getEsfuerzosTotales(dorsales);
-          if (esfuerzosTotalesEnEvento < evento.objetivoKm) {
-            eventosIncompletos++;
-          }
-        }
-      }
-    }
-
-    const inscripcionesMinimas = (eventosId.length < MAX_INSCRIPCIONES) &&
-      (eventosIncompletos < MAX_INSCRIPCIONES);
+    const usuarioParticipante = await this.existeDorsal(dorsal);
+    const eventosId =
+      (await this.getDorsalesPorUsuario(dorsal.usuario_id.toHexString()))
+        .map((dorsal: Dorsal) =>
+          new Bson.ObjectId(dorsal.evento_id).toHexString()
+        );
+    const eventosIncompletos = await this.getEventosIncompletos(eventosId);
+    const inscripcionesMinimas = eventosIncompletos < MAX_INSCRIPCIONES;
 
     if (!usuarioParticipante && inscripcionesMinimas) {
       try {
@@ -109,5 +84,49 @@ export class DorsalService {
     } catch (err) {
       throw err;
     }
+  }
+
+  public async getDorsalesPorEvento(id: string): Promise<Dorsal[]> {
+    try {
+      const eventoId = new Bson.ObjectId(id);
+      return await this.dorsalRepository.getAll({ "evento_id": eventoId });
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  private async existeDorsal(dorsal: Dorsal): Promise<boolean> {
+    try {
+      return (await this.dorsalRepository
+        .getAll({
+          "usuario_id": dorsal.usuario_id,
+          "evento_id": dorsal.evento_id,
+        })).length > 0;
+    } catch (_err) {
+      return false;
+    }
+  }
+
+  private async getEventosIncompletos(eventosId: string[]): Promise<number> {
+    let eventosIncompletos = 0;
+    const eventos = (await this.eventoRepository.getEventos(eventosId))
+      .entries();
+
+    while (eventosIncompletos < MAX_INSCRIPCIONES) {
+      const evento = eventos.next().value;
+      if (!evento) return eventosIncompletos;
+      if (new Date(evento[1].fechaFin) > new Date()) {
+        const dorsalesId =
+          (await this.getDorsalesPorEvento(evento[1]._id!.toHexString()))
+            .map((dorsal: Dorsal) => dorsal._id!.toHexString());
+        const esfuerzosTotalesEnEvento = await this.esfuerzoRepository
+          .getEsfuerzosTotales(dorsalesId);
+        if (esfuerzosTotalesEnEvento < evento[1].objetivoKm) {
+          eventosIncompletos++;
+        }
+      }
+    }
+
+    return eventosIncompletos;
   }
 }
