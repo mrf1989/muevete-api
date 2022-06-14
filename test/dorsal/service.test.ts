@@ -43,6 +43,16 @@ Rhum.testPlan("Testing Dorsal Service", () => {
       dorsalRepository.stub("createDorsal", () => {
         return new Bson.ObjectID("6235d572c077516a2dffa8ff");
       });
+      eventoRepository.stub("getEventos", () => {
+        return [{
+          _id: new Bson.ObjectId(),
+          fechaFin: new Date("2022-08-01"),
+          objetivoKm: 2000,
+        }];
+      });
+      esfuerzoRepository.stub("getEsfuerzosTotales", () => {
+        return 250;
+      });
 
       const dorsalService = new DorsalService(
         dorsalRepository,
@@ -51,8 +61,8 @@ Rhum.testPlan("Testing Dorsal Service", () => {
       );
       const res = await dorsalService.createDorsal({
         lema: "A por todas!",
-        usuario_id: "6235d572c077516a2dffa836",
-        evento_id: "6235d572c077516a2dffa823",
+        usuario_id: new Bson.ObjectID("6235d572c077516a2dffa836"),
+        evento_id: new Bson.ObjectID("6235d572c077516a2dffa823"),
       } as unknown as Dorsal);
       asserts.assertEquals(res, new Bson.ObjectID("6235d572c077516a2dffa8ff"));
     });
