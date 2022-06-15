@@ -48,11 +48,7 @@ export class DorsalService {
 
     if (!usuarioParticipante && inscripcionesMinimas) {
       try {
-        const num = (await this.dorsalRepository.getAll({
-          "evento_id": dorsal.evento_id,
-        }))
-          .length + 1;
-        dorsal.num = num;
+        dorsal.num = await this.getNuevoNumeroDorsal(dorsal.evento_id);
         return await this.dorsalRepository.createDorsal(dorsal);
       } catch (err) {
         throw err;
@@ -128,5 +124,16 @@ export class DorsalService {
     }
 
     return eventosIncompletos;
+  }
+
+  private async getNuevoNumeroDorsal(eventoId: Bson.ObjectId): Promise<number> {
+    try {
+      return (await this.dorsalRepository.getAll({
+        "evento_id": eventoId,
+      }))
+        .length + 1;
+    } catch (_err) {
+      return 1;
+    }
   }
 }
