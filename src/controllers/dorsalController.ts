@@ -55,12 +55,23 @@ export class DorsalController {
     }
   }
 
-  @GET("/dorsales/:id")
+  @GET("/dorsales/usuario/:id")
   public async getDorsalesPorUsuario(
     @RouteParam("id") id: string,
   ): Promise<Dorsal[]> {
     try {
       return await this.dorsalService.getDorsalesPorUsuario(id);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  @GET("/dorsales/evento/:id")
+  public async getDorsalesPorEvento(
+    @RouteParam("id") id: string,
+  ): Promise<Dorsal[]> {
+    try {
+      return await this.dorsalService.getDorsalesPorEvento(id);
     } catch (err) {
       throw err;
     }
