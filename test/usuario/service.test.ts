@@ -1,6 +1,10 @@
 import { asserts, Bson, Rhum, Stubbed } from "../../deps.ts";
 import { DBManagement } from "../../src/database/mongodb.ts";
-import { UsuarioRepository } from "../../src/repositories/repositories.ts";
+import {
+  DorsalRepository,
+  EventoRepository,
+  UsuarioRepository,
+} from "../../src/repositories/repositories.ts";
 import { UsuarioService } from "../../src/services/services.ts";
 import { Usuario } from "../../src/models/models.ts";
 
@@ -23,6 +27,8 @@ Rhum.testPlan("Testing Usuario Service", () => {
     enabled: true,
   };
   let usuarioRepository: Stubbed<UsuarioRepository>;
+  let eventoRepository: Stubbed<EventoRepository>;
+  let dorsalRepository: Stubbed<DorsalRepository>;
 
   Rhum.beforeAll(() => {
     dbManagement = Rhum.stubbed(new DBManagement());
@@ -37,6 +43,8 @@ Rhum.testPlan("Testing Usuario Service", () => {
   Rhum.testSuite("Operaciones CRUD en usuarios", () => {
     Rhum.beforeEach(() => {
       usuarioRepository = Rhum.stubbed(new UsuarioRepository(dbManagement));
+      eventoRepository = Rhum.stubbed(new EventoRepository(dbManagement));
+      dorsalRepository = Rhum.stubbed(new DorsalRepository(dbManagement));
     });
 
     Rhum.testCase("Permite crear un usuario", async () => {
@@ -48,7 +56,11 @@ Rhum.testPlan("Testing Usuario Service", () => {
         return true;
       });
 
-      const usuarioService = new UsuarioService(usuarioRepository);
+      const usuarioService = new UsuarioService(
+        usuarioRepository,
+        dorsalRepository,
+        eventoRepository,
+      );
       const res = await usuarioService.createUsuario(user);
       asserts.assertEquals(res, true);
     });
@@ -58,7 +70,11 @@ Rhum.testPlan("Testing Usuario Service", () => {
         return user;
       });
 
-      const usuarioService = new UsuarioService(usuarioRepository);
+      const usuarioService = new UsuarioService(
+        usuarioRepository,
+        dorsalRepository,
+        eventoRepository,
+      );
       asserts.assertThrowsAsync(
         async () => {
           await usuarioService.createUsuario(user);
@@ -73,11 +89,23 @@ Rhum.testPlan("Testing Usuario Service", () => {
         return user;
       });
 
+      dorsalRepository.stub("getAll", () => {
+        return [];
+      });
+
+      eventoRepository.stub("getEventos", () => {
+        return []
+      });
+
       usuarioRepository.stub("updateUsuario", () => {
         return user;
       });
 
-      const usuarioService = new UsuarioService(usuarioRepository);
+      const usuarioService = new UsuarioService(
+        usuarioRepository,
+        dorsalRepository,
+        eventoRepository,
+      );
       let res: Usuario | undefined;
 
       if (user._id) {
@@ -95,7 +123,11 @@ Rhum.testPlan("Testing Usuario Service", () => {
         throw new Error("Usuario no encontrado");
       });
 
-      const usuarioService = new UsuarioService(usuarioRepository);
+      const usuarioService = new UsuarioService(
+        usuarioRepository,
+        dorsalRepository,
+        eventoRepository,
+      );
 
       asserts.assertThrowsAsync(async () => {
         await usuarioService.updateUsuario(
@@ -112,7 +144,11 @@ Rhum.testPlan("Testing Usuario Service", () => {
           return [user, user, user];
         });
 
-        const usuarioService = new UsuarioService(usuarioRepository);
+        const usuarioService = new UsuarioService(
+          usuarioRepository,
+          dorsalRepository,
+          eventoRepository,
+        );
         const usuarios = await usuarioService.getAllUsuarios();
         asserts.assertEquals(usuarios.length, 3);
       },
@@ -123,7 +159,11 @@ Rhum.testPlan("Testing Usuario Service", () => {
         return 1;
       });
 
-      const usuarioService = new UsuarioService(usuarioRepository);
+      const usuarioService = new UsuarioService(
+        usuarioRepository,
+        dorsalRepository,
+        eventoRepository,
+      );
       const res = await usuarioService.deleteUsuario(
         "62358b4fac70f4b258326c48",
       );
@@ -138,7 +178,11 @@ Rhum.testPlan("Testing Usuario Service", () => {
         throw new Error("Error en la eliminación del ususario");
       });
 
-      const usuarioService = new UsuarioService(usuarioRepository);
+      const usuarioService = new UsuarioService(
+        usuarioRepository,
+        dorsalRepository,
+        eventoRepository,
+      );
 
       asserts.assertThrowsAsync(async () => {
         await usuarioService.deleteUsuario(user._id!.id);

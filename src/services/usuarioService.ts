@@ -1,11 +1,19 @@
 import { Bson, Service } from "../../deps.ts";
-import { UsuarioRepository } from "../repositories/repositories.ts";
-import { Usuario } from "../models/models.ts";
+import {
+  DorsalRepository,
+  EventoRepository,
+  UsuarioRepository,
+} from "../repositories/repositories.ts";
+import { Dorsal, Evento, Usuario } from "../models/models.ts";
 import { PasswordEncoder } from "../utils/utils.ts";
 
 @Service()
 export class UsuarioService {
-  constructor(private readonly usuarioRepository: UsuarioRepository) {}
+  constructor(
+    private readonly usuarioRepository: UsuarioRepository,
+    private readonly dorsalRepository: DorsalRepository,
+    private readonly eventoRepository: EventoRepository,
+  ) {}
 
   public async getAllUsuarios() {
     return await this.usuarioRepository.getAll();
@@ -13,7 +21,19 @@ export class UsuarioService {
 
   public async getUsuario(id: string) {
     try {
-      return await this.usuarioRepository.getUsuario(new Bson.ObjectId(id));
+      const usuario = await this.usuarioRepository.getUsuario(
+        new Bson.ObjectId(id),
+      );
+      const dorsales: Dorsal[] = await this.dorsalRepository.getAll({
+        "usuario_id": usuario._id,
+      });
+      const eventosId: string[] = dorsales.map((dorsal) =>
+        dorsal.evento_id.toHexString()
+      );
+      const eventos: Evento[] = await this.eventoRepository.getEventos(
+        eventosId,
+      );
+      return { usuario, eventos, dorsales };
     } catch (err) {
       throw err;
     }
@@ -52,7 +72,7 @@ export class UsuarioService {
     try {
       const usuario = await this.getUsuario(id);
       const res = await this.usuarioRepository.updateUsuario(
-        usuario._id as Bson.ObjectID,
+        usuario.usuario._id as Bson.ObjectID,
         payload,
       );
       if (res) return res;
