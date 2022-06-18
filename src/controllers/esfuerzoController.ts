@@ -14,11 +14,11 @@ import { EsfuerzoService } from "../services/services.ts";
 import { Esfuerzo } from "../models/models.ts";
 
 @Controller("/api")
-@AllowOnly("isAuthenticated()")
 export class EsfuerzoController {
   constructor(private readonly esfuerzoService: EsfuerzoService) {}
 
   @POST("/esfuerzo")
+  @AllowOnly("isAuthenticated()")
   public async addEsfuerzo(
     @RequestBody() payload: Esfuerzo,
     @AuthPrincipal() principal: Mandarine.Types.UserDetails,
@@ -46,6 +46,15 @@ export class EsfuerzoController {
   ): Promise<Esfuerzo[]> {
     try {
       return await this.esfuerzoService.getEsfuerzosPorDorsal(id);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  @GET("/esfuerzos/evento/:id")
+  public async getEsfuerzosPorEvento(@RouteParam("id") id: string): Promise<Esfuerzo[]> {
+    try {
+      return await this.esfuerzoService.getEsfuerzosPorEvento(id);
     } catch (err) {
       throw err;
     }
