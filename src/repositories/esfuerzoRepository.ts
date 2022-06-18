@@ -39,13 +39,19 @@ export class EsfuerzoRepository {
   }
 
   public async getEsfuerzosTotales(dorsales: string[]) {
-    const dorsalesId = dorsales.map((id) => new Bson.ObjectID(id));
+    const esfuerzos = await this.getEsfuerzosPorDorsales(dorsales);
     let acum = 0;
-    await this.esfuerzos.find({
-      "dorsal_id": { $in: dorsalesId },
-    }, { noCursorTimeout: false }).map((esfuerzo) =>
-      acum = acum + esfuerzo.numKm
-    );
+    esfuerzos.forEach((esfuerzo) => acum = acum + esfuerzo.numKm);
     return acum;
+  }
+
+  public async getEsfuerzosPorDorsales(
+    dorsales: string[],
+  ): Promise<Esfuerzo[]> {
+    const dorsalesId = dorsales.map((id) => new Bson.ObjectId(id));
+    const esfuerzos = await this.esfuerzos.find({
+      "dorsal_id": { $in: dorsalesId },
+    }, { noCursorTimeout: false }).toArray();
+    return esfuerzos;
   }
 }
