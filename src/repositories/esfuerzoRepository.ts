@@ -45,7 +45,9 @@ export class EsfuerzoRepository {
     return acum;
   }
 
-  public async getEsfuerzosPorDorsales(dorsales: string[]): Promise<Esfuerzo[]> {
+  public async getEsfuerzosPorDorsales(
+    dorsales: string[],
+  ): Promise<Esfuerzo[]> {
     const dorsalesId = dorsales.map((id) => new Bson.ObjectId(id));
     const esfuerzos = await this.esfuerzos.find({
       "dorsal_id": { $in: dorsalesId },

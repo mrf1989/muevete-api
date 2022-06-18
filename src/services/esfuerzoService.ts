@@ -77,8 +77,8 @@ export class EsfuerzoService {
     try {
       const eventoId = new Bson.ObjectId(id);
       const dorsales =
-      (await this.dorsalRepository.getAll({ "evento_id": { $eq: eventoId } }))
-        .map((dorsal) => (dorsal._id!.toHexString()));
+        (await this.dorsalRepository.getAll({ "evento_id": { $eq: eventoId } }))
+          .map((dorsal) => (dorsal._id!.toHexString()));
       return await this.esfuerzoRepository.getEsfuerzosPorDorsales(dorsales);
     } catch (err) {
       throw err;

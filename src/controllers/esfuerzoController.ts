@@ -52,7 +52,9 @@ export class EsfuerzoController {
   }
 
   @GET("/esfuerzos/evento/:id")
-  public async getEsfuerzosPorEvento(@RouteParam("id") id: string): Promise<Esfuerzo[]> {
+  public async getEsfuerzosPorEvento(
+    @RouteParam("id") id: string,
+  ): Promise<Esfuerzo[]> {
     try {
       return await this.esfuerzoService.getEsfuerzosPorEvento(id);
     } catch (err) {

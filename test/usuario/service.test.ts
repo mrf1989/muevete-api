@@ -94,7 +94,7 @@ Rhum.testPlan("Testing Usuario Service", () => {
       });
 
       eventoRepository.stub("getEventos", () => {
-        return []
+        return [];
       });
 
       usuarioRepository.stub("updateUsuario", () => {
