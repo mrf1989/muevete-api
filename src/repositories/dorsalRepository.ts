@@ -2,8 +2,6 @@ import { Bson, Collection, Component, Database } from "../../deps.ts";
 import { DBManagement } from "../database/mongodb.ts";
 import { Dorsal } from "../models/models.ts";
 
-const ERROR_NOT_FOUND = new Error("No se encuentran dorsales");
-
 @Component()
 export class DorsalRepository {
   private db!: Database;
@@ -22,7 +20,6 @@ export class DorsalRepository {
     const dorsales = await this.dorsales.find(filter, {
       noCursorTimeout: false,
     }).toArray();
-    if (!dorsales.length) throw ERROR_NOT_FOUND;
     return dorsales;
   }
 
