@@ -41,7 +41,7 @@ export class EsfuerzoRepository {
   public async getEsfuerzosTotales(dorsales: string[]) {
     const esfuerzos = await this.getEsfuerzosPorDorsales(dorsales);
     let acum = 0;
-    esfuerzos.map((esfuerzo) => acum = acum + esfuerzo.numKm);
+    esfuerzos.forEach((esfuerzo) => acum = acum + esfuerzo.numKm);
     return acum;
   }
 
