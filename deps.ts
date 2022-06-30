@@ -39,3 +39,9 @@ export { Collection } from "https://deno.land/x/mongo@v0.23.0/src/collection/mod
 export { Rhum } from "https://deno.land/x/rhum@v1.1.13/mod.ts";
 export type { Stubbed } from "https://deno.land/x/rhum@v1.1.13/mod.ts";
 export * as asserts from "https://deno.land/std@0.106.0/testing/asserts.ts";
+
+// Dependencias para denon
+// Requieres instalar denon
+// deno install -qAf --unstable https://deno.land/x/denon@2.4.8/denon.ts
+export type { DenonConfig } from "https://deno.land/x/denon@2.4.7/mod.ts";
+export { config as env } from "https://deno.land/x/dotenv/mod.ts";
