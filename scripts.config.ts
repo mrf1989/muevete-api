@@ -10,6 +10,13 @@ const config: DenonConfig = {
       allow: ["net", "env", "read"],
       unstable: true,
     },
+    test: {
+      cmd: "deno test",
+      desc: "Ejecuta todas las suites de tests",
+      tsconfig: "tsconfig.json",
+      allow: ["net", "env", "read"],
+      unstable: true
+    }
   },
 };
 
