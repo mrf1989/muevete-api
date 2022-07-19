@@ -1,4 +1,7 @@
-{"_id":{"$oid":"62a5db536a4de707c6384cda"},"num":1,"lema":"Vamos con todo!!","usuario_id":{"$oid":"6298d9c2f1b0f0495e061f15"},"evento_id":{"$oid":"6298e002f1b0f0495e061f1f"}}
-{"_id":{"$oid":"62a5db576a4de707c6384cdb"},"num":1,"lema":"El reto más importante de mi vida","usuario_id":{"$oid":"6298d9c2f1b0f0495e061f15"},"evento_id":{"$oid":"6298e084f1b0f0495e061f20"}}
-{"_id":{"$oid":"62a5db586a4de707c6384cdc"},"num":1,"lema":"Muévete!!!","usuario_id":{"$oid":"6298d9c2f1b0f0495e061f15"},"evento_id":{"$oid":"6298e0d3f1b0f0495e061f21"}}
-{"_id":{"$oid":"62a5db746a4de707c6384cdd"},"num":1,"lema":"El objetivo del año, mi mayor reto","usuario_id":{"$oid":"6298d9c2f1b0f0495e061f15"},"evento_id":{"$oid":"6298e183f1b0f0495e061f22"}}
+{"_id":{"$oid":"62cca72aee1adf2c9e8096dd"},"lema":"El sueño de completar 42K","usuario_id":{"$oid":"6298da0af1b0f0495e061f16"},"evento_id":{"$oid":"6298e084f1b0f0495e061f20"},"num":1}
+{"_id":{"$oid":"62cca770ee1adf2c9e8096de"},"lema":"Andando hasta el fin del mundo!!","usuario_id":{"$oid":"6298dc2af1b0f0495e061f1a"},"evento_id":{"$oid":"6298e084f1b0f0495e061f20"},"num":2}
+{"_id":{"$oid":"62cca7a7ee1adf2c9e8096df"},"lema":"Que voy sin ruedines!!!","usuario_id":{"$oid":"6298dbe7f1b0f0495e061f19"},"evento_id":{"$oid":"6298e0d3f1b0f0495e061f21"},"num":1}
+{"_id":{"$oid":"62cca7bcee1adf2c9e8096e0"},"lema":"A tope Muévete!!!","usuario_id":{"$oid":"6298dbe7f1b0f0495e061f19"},"evento_id":{"$oid":"6298e084f1b0f0495e061f20"},"num":3}
+{"_id":{"$oid":"62cca7e7ee1adf2c9e8096e1"},"lema":"A nado km que me hago","usuario_id":{"$oid":"6298dba1f1b0f0495e061f18"},"evento_id":{"$oid":"6298e084f1b0f0495e061f20"},"num":4}
+{"_id":{"$oid":"62cca82aee1adf2c9e8096e2"},"lema":"Vive a plato, muere a piñón!","usuario_id":{"$oid":"6298da0af1b0f0495e061f16"},"evento_id":{"$oid":"6298e0d3f1b0f0495e061f21"},"num":2}
+{"_id":{"$oid":"62cca864ee1adf2c9e8096e3"},"lema":"Mi meta, mi objetivo","usuario_id":{"$oid":"6298db05f1b0f0495e061f17"},"evento_id":{"$oid":"6298e084f1b0f0495e061f20"},"num":5}
