@@ -4,7 +4,7 @@ import {
   EsfuerzoRepository,
   EventoRepository,
 } from "../repositories/repositories.ts";
-import { Dorsal } from "../models/models.ts";
+import { Dorsal, Evento } from "../models/models.ts";
 
 const MAX_INSCRIPCIONES = 3;
 
@@ -48,11 +48,7 @@ export class DorsalService {
 
     if (!usuarioParticipante && inscripcionesMinimas) {
       try {
-        const num = (await this.dorsalRepository.getAll({
-          "evento_id": dorsal.evento_id,
-        }))
-          .length + 1;
-        dorsal.num = num;
+        dorsal.num = await this.getNuevoNumeroDorsal(dorsal.evento_id);
         return await this.dorsalRepository.createDorsal(dorsal);
       } catch (err) {
         throw err;
@@ -115,7 +111,7 @@ export class DorsalService {
     while (eventosIncompletos < MAX_INSCRIPCIONES) {
       const evento = eventos.next().value;
       if (!evento) return eventosIncompletos;
-      if (new Date(evento[1].fechaFin) > new Date()) {
+      if (this.esEventoActivo(evento[1])) {
         const dorsalesId =
           (await this.getDorsalesPorEvento(evento[1]._id!.toHexString()))
             .map((dorsal: Dorsal) => dorsal._id!.toHexString());
@@ -128,5 +124,24 @@ export class DorsalService {
     }
 
     return eventosIncompletos;
+  }
+
+  private async getNuevoNumeroDorsal(eventoId: Bson.ObjectId): Promise<number> {
+    try {
+      return (await this.dorsalRepository.getAll({
+        "evento_id": eventoId,
+      }))
+        .length + 1;
+    } catch (_err) {
+      return 1;
+    }
+  }
+
+  private esEventoActivo(evento: Evento): boolean {
+    const fechaActual = new Date();
+    const fechaInicio = new Date(evento.fechaInicio);
+    const fechaFin = new Date(evento.fechaFin);
+
+    return (fechaInicio < fechaActual) && (fechaFin > fechaActual);
   }
 }

@@ -47,6 +47,7 @@ export class EsfuerzoService {
     if (evento.objetivoKm >= esfuerzosTotalesEnEvento + esfuerzo.numKm) {
       if (evento.modalidad.includes(esfuerzo.modalidad)) {
         try {
+          esfuerzo.fecha = new Date();
           return await this.esfuerzoRepository.createEsfuerzo(esfuerzo);
         } catch (err) {
           throw err;
@@ -67,6 +68,18 @@ export class EsfuerzoService {
     try {
       const dorsalId = new Bson.ObjectId(id);
       return await this.esfuerzoRepository.getAll({ "dorsal_id": dorsalId });
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  public async getEsfuerzosPorEvento(id: string): Promise<Esfuerzo[]> {
+    try {
+      const eventoId = new Bson.ObjectId(id);
+      const dorsales =
+        (await this.dorsalRepository.getAll({ "evento_id": { $eq: eventoId } }))
+          .map((dorsal) => (dorsal._id!.toHexString()));
+      return await this.esfuerzoRepository.getEsfuerzosPorDorsales(dorsales);
     } catch (err) {
       throw err;
     }
