@@ -15,8 +15,8 @@ const config: DenonConfig = {
       desc: "Ejecuta todas las suites de tests",
       tsconfig: "tsconfig.json",
       allow: ["net", "env", "read"],
-      unstable: true
-    }
+      unstable: true,
+    },
   },
 };
 

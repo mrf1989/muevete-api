@@ -4,3 +4,4 @@ export { AuthService } from "./authService.ts";
 export { ArticuloService } from "./articuloService.ts";
 export { DorsalService } from "./dorsalService.ts";
 export { EsfuerzoService } from "./esfuerzoService.ts";
+export { NewsletterService } from "./newsletterService.ts";

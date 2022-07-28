@@ -1,7 +1,14 @@
 import { Bson } from "../../deps.ts";
 
 export interface Newsletter {
-  _id: Bson.ObjectID;
+  _id?: Bson.ObjectID;
   titulo: string;
-  fecha: Date;
+  cuerpo?: string;
+  fecha?: Date;
+  fechaEnvio?: Date;
+  enlaces: {
+    titulo: string;
+    enlace: string;
+    tipo: string;
+  }[];
 }
