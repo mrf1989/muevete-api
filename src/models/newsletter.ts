@@ -9,5 +9,6 @@ export interface Newsletter {
   enlaces: {
     titulo: string;
     enlace: string;
-  };
+    tipo: string;
+  }[];
 }

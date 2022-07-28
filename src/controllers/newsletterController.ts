@@ -10,7 +10,6 @@ import { NewsletterService } from "../services/services.ts";
 import { Newsletter } from "../models/models.ts";
 
 @Controller("/api/admin")
-@AllowOnly("hasRole('ADMIN')")
 export class NewsletterController {
   constructor(private readonly newsletterService: NewsletterService) {}
 
@@ -31,6 +30,7 @@ export class NewsletterController {
   }
 
   @POST("/newsletters")
+  @AllowOnly("hasRole('ADMIN')")
   public async createNewsletter(@RequestBody() payload: Newsletter) {
     try {
       return await this.newsletterService.createNewsletter(payload);

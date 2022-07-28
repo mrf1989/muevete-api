@@ -21,12 +21,18 @@ export class NewsletterService {
   }
 
   public async createNewsletter(payload: Newsletter): Promise<Bson.Document> {
-    try {
-      const newsletter: Newsletter = payload as Newsletter;
-      newsletter.fecha = new Date(Date.now());
-      return await this.newsletterRepository.createNewsletter(newsletter);
-    } catch (err) {
-      throw err;
+    const newsletter: Newsletter = payload as Newsletter;
+    if (newsletter.enlaces.length >= 5) {
+      try {
+        newsletter.fecha = new Date(Date.now());
+        return await this.newsletterRepository.createNewsletter(newsletter);
+      } catch (err) {
+        throw err;
+      }
+    } else {
+      throw new Error(
+        "La newsletter debe tener al menos 5 enlaces entre artículos y eventos",
+      );
     }
   }
 
@@ -36,11 +42,48 @@ export class NewsletterService {
       newsletterId,
     );
     newsletter.fechaEnvio = new Date(Date.now());
-    const res = await this.newsletterRepository.updateNewsletter(
-      newsletterId,
-      newsletter,
-    );
-    if (!res) throw new Error("La newsletter no se ha podido actualizar");
-    return res;
+
+    const ultimaNewsletter = await this.getUltimaNewsletterEnviada();
+    const fechaEnvioDisponible = this.diasEntreFechas(
+      ultimaNewsletter.fechaEnvio!,
+      newsletter.fechaEnvio,
+    ) >= 15;
+
+    if (fechaEnvioDisponible) {
+      const res = await this.newsletterRepository.updateNewsletter(
+        newsletterId,
+        newsletter,
+      );
+
+      if (!res) throw new Error("La newsletter no se ha podido actualizar");
+
+      return res;
+    } else {
+      throw new Error(
+        "No es posible enviar una nueva newsletter en un plazo inferior a 15 días desde el último envío",
+      );
+    }
+  }
+
+  public async getUltimaNewsletterEnviada(): Promise<Newsletter> {
+    const newsletters = await this.getAllNewsletters();
+    let ultimaNewsletter: Newsletter = newsletters[0];
+
+    newsletters.forEach((newsletter) => {
+      if (
+        newsletter.fechaEnvio &&
+        (newsletter.fechaEnvio > ultimaNewsletter!.fechaEnvio!)
+      ) {
+        ultimaNewsletter = newsletter;
+      }
+    });
+
+    return ultimaNewsletter!;
+  }
+
+  public diasEntreFechas(fechaA: Date, fechaB: Date): number {
+    const miliseconds: number = Math.abs(fechaB.getTime() - fechaA.getTime());
+    const dias: number = Math.ceil(miliseconds / (1000 * 60 * 60 * 24));
+    return dias;
   }
 }
