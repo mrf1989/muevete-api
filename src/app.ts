@@ -12,6 +12,7 @@ const controllers = [
   Controllers.EsfuerzoController,
   Controllers.EventoController,
   Controllers.UsuarioController,
+  Controllers.NewsletterController,
 ];
 const services = [
   Services.ArticuloService,
@@ -19,6 +20,7 @@ const services = [
   Services.EsfuerzoService,
   Services.DorsalService,
   Services.EventoService,
+  Services.NewsletterService,
   Services.UsuarioService,
 ];
 const middleware = [];
@@ -30,6 +32,7 @@ const components = [
   Repositories.DorsalRepository,
   Repositories.EsfuerzoRepository,
   Repositories.EventoRepository,
+  Repositories.NewsletterRepository,
   Repositories.UsuarioRepository,
 ];
 const otherModules = [];
