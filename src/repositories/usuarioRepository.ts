@@ -26,7 +26,6 @@ export class UsuarioRepository {
         "accountExpired": 0,
         "accountLocked": 0,
         "credentialsExpired": 0,
-        "enabled": 0,
       },
     }).toArray();
     if (!usuarios) throw new Error("No se encuentran usuarios");
@@ -43,7 +42,6 @@ export class UsuarioRepository {
         "accountExpired": 0,
         "accountLocked": 0,
         "credentialsExpired": 0,
-        "enabled": 0,
       },
     });
     if (!usuario) throw new Error("Usuario no encontrado");

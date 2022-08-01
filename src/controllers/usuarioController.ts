@@ -46,7 +46,7 @@ export class UsuarioController {
     @RouteParam("id") id: string,
     @RequestBody() payload: T,
   ) {
-    if (principal.uid == id) {
+    if ((principal.uid == id) || principal.roles.indexOf("ADMIN") >= 0) {
       try {
         return await this.usuarioService.updateUsuario(id, payload);
       } catch (err) {
