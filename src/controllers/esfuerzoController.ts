@@ -61,4 +61,15 @@ export class EsfuerzoController {
       throw err;
     }
   }
+
+  @GET("/esfuerzos/usuario/:id")
+  public async getEsfuerzosPorUsuario(
+    @RouteParam("id") id: string,
+  ): Promise<Esfuerzo[]> {
+    try {
+      return await this.esfuerzoService.getEsfuerzosPorUsuario(id);
+    } catch (err) {
+      throw err;
+    }
+  }
 }
