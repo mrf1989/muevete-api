@@ -54,4 +54,10 @@ export class EsfuerzoRepository {
     }, { noCursorTimeout: false }).toArray();
     return esfuerzos;
   }
+
+  public async getEsfuerzosPorUsuario(id: Bson.ObjectId): Promise<Esfuerzo[]> {
+    return await this.esfuerzos.find({
+      "usuario_id": id,
+    }, { noCursorTimeout: false }).toArray();
+  }
 }

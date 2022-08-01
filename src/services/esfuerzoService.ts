@@ -84,4 +84,13 @@ export class EsfuerzoService {
       throw err;
     }
   }
+
+  public async getEsfuerzosPorUsuario(id: string): Promise<Esfuerzo[]> {
+    try {
+      const usuarioId = new Bson.ObjectId(id);
+      return await this.esfuerzoRepository.getEsfuerzosPorUsuario(usuarioId);
+    } catch (err) {
+      throw err;
+    }
+  }
 }
