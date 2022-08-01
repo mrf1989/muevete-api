@@ -62,6 +62,8 @@ Rhum.testPlan("Testing Newsletter Service", () => {
       newsletterRepository = Rhum.stubbed(
         new NewsletterRepository(dbManagement),
       );
+
+      nuevaNewsletter.fechaEnvio = undefined;
     });
 
     Rhum.testCase(
@@ -110,6 +112,36 @@ Rhum.testPlan("Testing Newsletter Service", () => {
           "6235d572c077516a2dffaa8f",
         );
 
+        asserts.assertEquals(
+          newsletterEnviada.fechaEnvio,
+          nuevaNewsletter.fechaEnvio,
+        );
+      },
+    );
+
+    Rhum.testCase(
+      "Permite la actualización (envío) de newsletter si no se ha enviado ninguna",
+      async () => {
+        newsletterRepository.stub("getAll", () => {
+          return [];
+        });
+
+        newsletterRepository.stub("getNewsletter", () => {
+          return nuevaNewsletter;
+        });
+
+        newsletterRepository.stub("updateNewsletter", () => {
+          nuevaNewsletter.fechaEnvio = new Date(Date.now());
+          return nuevaNewsletter;
+        });
+
+        const newsletterService = new NewsletterService(newsletterRepository);
+        const newsletterEnviada = await newsletterService.updateNewsletter(
+          "6235d572c077516a2dffaa8f",
+        );
+
+        asserts.assertNotEquals(newsletterEnviada.fechaEnvio, undefined);
+        asserts.assertNotEquals(typeof newsletterEnviada.fechaEnvio, undefined);
         asserts.assertEquals(
           newsletterEnviada.fechaEnvio,
           nuevaNewsletter.fechaEnvio,

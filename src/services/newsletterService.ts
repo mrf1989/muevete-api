@@ -44,10 +44,13 @@ export class NewsletterService {
     newsletter.fechaEnvio = new Date(Date.now());
 
     const ultimaNewsletter = await this.getUltimaNewsletterEnviada();
-    const fechaEnvioDisponible = this.diasEntreFechas(
-      ultimaNewsletter.fechaEnvio!,
-      newsletter.fechaEnvio,
-    ) >= 15;
+
+    const fechaEnvioDisponible = ultimaNewsletter
+      ? this.diasEntreFechas(
+        ultimaNewsletter!.fechaEnvio!,
+        newsletter.fechaEnvio,
+      ) >= 15
+      : true;
 
     if (fechaEnvioDisponible) {
       const res = await this.newsletterRepository.updateNewsletter(
@@ -65,20 +68,27 @@ export class NewsletterService {
     }
   }
 
-  public async getUltimaNewsletterEnviada(): Promise<Newsletter> {
-    const newsletters = await this.getAllNewsletters();
-    let ultimaNewsletter: Newsletter = newsletters[0];
+  public async getUltimaNewsletterEnviada(): Promise<Newsletter | undefined> {
+    const allNewsletters = await this.getAllNewsletters();
+    const newsletters = allNewsletters.filter((newsletter) =>
+      newsletter.fechaEnvio
+    );
 
-    newsletters.forEach((newsletter) => {
-      if (
-        newsletter.fechaEnvio &&
-        (newsletter.fechaEnvio > ultimaNewsletter!.fechaEnvio!)
-      ) {
-        ultimaNewsletter = newsletter;
-      }
-    });
+    if (newsletters.length > 0) {
+      let ultimaNewsletter: Newsletter = newsletters[0];
+      newsletters.forEach((newsletter) => {
+        if (
+          newsletter.fechaEnvio &&
+          (newsletter.fechaEnvio > ultimaNewsletter!.fechaEnvio!)
+        ) {
+          ultimaNewsletter = newsletter;
+        }
+      });
 
-    return ultimaNewsletter!;
+      return ultimaNewsletter;
+    }
+
+    return undefined;
   }
 
   public diasEntreFechas(fechaA: Date, fechaB: Date): number {

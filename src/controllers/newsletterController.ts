@@ -3,6 +3,7 @@ import {
   Controller,
   GET,
   POST,
+  PUT,
   RequestBody,
   RouteParam,
 } from "../../deps.ts";
@@ -34,6 +35,16 @@ export class NewsletterController {
   public async createNewsletter(@RequestBody() payload: Newsletter) {
     try {
       return await this.newsletterService.createNewsletter(payload);
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  @PUT("/newsletters")
+  @AllowOnly("hasRole('ADMIN')")
+  public async registraEnvioNewsletter(@RequestBody() payload: { id: string }) {
+    try {
+      return await this.newsletterService.updateNewsletter(payload.id);
     } catch (err) {
       throw err;
     }
