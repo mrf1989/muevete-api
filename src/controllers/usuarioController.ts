@@ -20,6 +20,13 @@ export class UsuarioController {
     private readonly usuarioService: UsuarioService,
   ) {}
 
+  @GET("")
+  public getAccesoAPI() {
+    return JSON.parse(JSON.stringify({
+      api: "Muévete APP",
+    }));
+  }
+
   @GET("/admin/usuarios")
   @AllowOnly("hasRole('ADMIN')")
   public async getAllUsuarios() {
