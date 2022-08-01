@@ -45,10 +45,12 @@ export class NewsletterService {
 
     const ultimaNewsletter = await this.getUltimaNewsletterEnviada();
 
-    const fechaEnvioDisponible = ultimaNewsletter ? this.diasEntreFechas(
-      ultimaNewsletter!.fechaEnvio!,
-      newsletter.fechaEnvio,
-    ) >= 15 : true;
+    const fechaEnvioDisponible = ultimaNewsletter
+      ? this.diasEntreFechas(
+        ultimaNewsletter!.fechaEnvio!,
+        newsletter.fechaEnvio,
+      ) >= 15
+      : true;
 
     if (fechaEnvioDisponible) {
       const res = await this.newsletterRepository.updateNewsletter(
@@ -68,8 +70,10 @@ export class NewsletterService {
 
   public async getUltimaNewsletterEnviada(): Promise<Newsletter | undefined> {
     const allNewsletters = await this.getAllNewsletters();
-    const newsletters = allNewsletters.filter(newsletter => newsletter.fechaEnvio);
-    
+    const newsletters = allNewsletters.filter((newsletter) =>
+      newsletter.fechaEnvio
+    );
+
     if (newsletters.length > 0) {
       let ultimaNewsletter: Newsletter = newsletters[0];
       newsletters.forEach((newsletter) => {
@@ -80,7 +84,7 @@ export class NewsletterService {
           ultimaNewsletter = newsletter;
         }
       });
-  
+
       return ultimaNewsletter;
     }
 

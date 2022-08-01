@@ -119,32 +119,35 @@ Rhum.testPlan("Testing Newsletter Service", () => {
       },
     );
 
-    Rhum.testCase("Permite la actualización (envío) de newsletter si no se ha enviado ninguna", async () => {
-      newsletterRepository.stub("getAll", () => {
-        return [];
-      });
+    Rhum.testCase(
+      "Permite la actualización (envío) de newsletter si no se ha enviado ninguna",
+      async () => {
+        newsletterRepository.stub("getAll", () => {
+          return [];
+        });
 
-      newsletterRepository.stub("getNewsletter", () => {
-        return nuevaNewsletter;
-      });
+        newsletterRepository.stub("getNewsletter", () => {
+          return nuevaNewsletter;
+        });
 
-      newsletterRepository.stub("updateNewsletter", () => {
-        nuevaNewsletter.fechaEnvio = new Date(Date.now());
-        return nuevaNewsletter;
-      });
+        newsletterRepository.stub("updateNewsletter", () => {
+          nuevaNewsletter.fechaEnvio = new Date(Date.now());
+          return nuevaNewsletter;
+        });
 
-      const newsletterService = new NewsletterService(newsletterRepository);
-      const newsletterEnviada = await newsletterService.updateNewsletter(
-        "6235d572c077516a2dffaa8f",
-      );
+        const newsletterService = new NewsletterService(newsletterRepository);
+        const newsletterEnviada = await newsletterService.updateNewsletter(
+          "6235d572c077516a2dffaa8f",
+        );
 
-      asserts.assertNotEquals(newsletterEnviada.fechaEnvio, undefined);
-      asserts.assertNotEquals(typeof newsletterEnviada.fechaEnvio, undefined);
-      asserts.assertEquals(
-        newsletterEnviada.fechaEnvio,
-        nuevaNewsletter.fechaEnvio,
-      );
-    });
+        asserts.assertNotEquals(newsletterEnviada.fechaEnvio, undefined);
+        asserts.assertNotEquals(typeof newsletterEnviada.fechaEnvio, undefined);
+        asserts.assertEquals(
+          newsletterEnviada.fechaEnvio,
+          nuevaNewsletter.fechaEnvio,
+        );
+      },
+    );
 
     Rhum.testCase(
       "Impide la creación de newsletter con menos de 5 enlaces",
