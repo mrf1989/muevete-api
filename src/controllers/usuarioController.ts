@@ -20,6 +20,13 @@ export class UsuarioController {
     private readonly usuarioService: UsuarioService,
   ) {}
 
+  @GET("")
+  public getAccesoAPI() {
+    return JSON.parse(JSON.stringify({
+      api: "Muévete APP",
+    }));
+  }
+
   @GET("/admin/usuarios")
   @AllowOnly("hasRole('ADMIN')")
   public async getAllUsuarios() {
@@ -46,7 +53,7 @@ export class UsuarioController {
     @RouteParam("id") id: string,
     @RequestBody() payload: T,
   ) {
-    if (principal.uid == id) {
+    if ((principal.uid == id) || principal.roles.indexOf("ADMIN") >= 0) {
       try {
         return await this.usuarioService.updateUsuario(id, payload);
       } catch (err) {
