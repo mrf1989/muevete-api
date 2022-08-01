@@ -62,6 +62,8 @@ Rhum.testPlan("Testing Newsletter Service", () => {
       newsletterRepository = Rhum.stubbed(
         new NewsletterRepository(dbManagement),
       );
+
+      nuevaNewsletter.fechaEnvio = undefined;
     });
 
     Rhum.testCase(
@@ -136,6 +138,8 @@ Rhum.testPlan("Testing Newsletter Service", () => {
         "6235d572c077516a2dffaa8f",
       );
 
+      asserts.assertNotEquals(newsletterEnviada.fechaEnvio, undefined);
+      asserts.assertNotEquals(typeof newsletterEnviada.fechaEnvio, undefined);
       asserts.assertEquals(
         newsletterEnviada.fechaEnvio,
         nuevaNewsletter.fechaEnvio,
