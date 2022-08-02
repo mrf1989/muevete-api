@@ -3,3 +3,4 @@ export type { Dorsal } from "./dorsal.ts";
 export type { Esfuerzo } from "./esfuerzo.ts";
 export type { Evento } from "./evento.ts";
 export type { Usuario } from "./usuario.ts";
+export type { Newsletter } from "./newsletter.ts";
