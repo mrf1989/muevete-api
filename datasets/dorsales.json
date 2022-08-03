@@ -1,7 +1,11 @@
 {"_id":{"$oid":"62cca72aee1adf2c9e8096dd"},"lema":"El sueño de completar 42K","usuario_id":{"$oid":"6298da0af1b0f0495e061f16"},"evento_id":{"$oid":"6298e084f1b0f0495e061f20"},"num":1}
-{"_id":{"$oid":"62cca770ee1adf2c9e8096de"},"lema":"Andando hasta el fin del mundo!!","usuario_id":{"$oid":"6298dc2af1b0f0495e061f1a"},"evento_id":{"$oid":"6298e084f1b0f0495e061f20"},"num":2}
-{"_id":{"$oid":"62cca7a7ee1adf2c9e8096df"},"lema":"Que voy sin ruedines!!!","usuario_id":{"$oid":"6298dbe7f1b0f0495e061f19"},"evento_id":{"$oid":"6298e0d3f1b0f0495e061f21"},"num":1}
-{"_id":{"$oid":"62cca7bcee1adf2c9e8096e0"},"lema":"A tope Muévete!!!","usuario_id":{"$oid":"6298dbe7f1b0f0495e061f19"},"evento_id":{"$oid":"6298e084f1b0f0495e061f20"},"num":3}
 {"_id":{"$oid":"62cca7e7ee1adf2c9e8096e1"},"lema":"A nado km que me hago","usuario_id":{"$oid":"6298dba1f1b0f0495e061f18"},"evento_id":{"$oid":"6298e084f1b0f0495e061f20"},"num":4}
 {"_id":{"$oid":"62cca82aee1adf2c9e8096e2"},"lema":"Vive a plato, muere a piñón!","usuario_id":{"$oid":"6298da0af1b0f0495e061f16"},"evento_id":{"$oid":"6298e0d3f1b0f0495e061f21"},"num":2}
 {"_id":{"$oid":"62cca864ee1adf2c9e8096e3"},"lema":"Mi meta, mi objetivo","usuario_id":{"$oid":"6298db05f1b0f0495e061f17"},"evento_id":{"$oid":"6298e084f1b0f0495e061f20"},"num":5}
+{"_id":{"$oid":"62cca7bcee1adf2c9e8096e0"},"lema":"A tope Muévete!!!","usuario_id":{"$oid":"6298dbe7f1b0f0495e061f19"},"evento_id":{"$oid":"6298e084f1b0f0495e061f20"},"num":3}
+{"_id":{"$oid":"62cca770ee1adf2c9e8096de"},"lema":"Andando hasta el fin del mundo!!","usuario_id":{"$oid":"6298dc2af1b0f0495e061f1a"},"evento_id":{"$oid":"6298e084f1b0f0495e061f20"},"num":2}
+{"_id":{"$oid":"62cca7a7ee1adf2c9e8096df"},"lema":"Que voy sin ruedines!!!","usuario_id":{"$oid":"6298dbe7f1b0f0495e061f19"},"evento_id":{"$oid":"6298e0d3f1b0f0495e061f21"},"num":1}
+{"_id":{"$oid":"62d830e634ee564f1feafcb6"},"usuario_id":{"$oid":"6298dba1f1b0f0495e061f18"},"evento_id":{"$oid":"6298e0d3f1b0f0495e061f21"},"num":3}
+{"_id":{"$oid":"62d879cf34ee564f1feafcb7"},"lema":"La vida es una vuelta de pedal","usuario_id":{"$oid":"6298d9c2f1b0f0495e061f15"},"evento_id":{"$oid":"6298e0d3f1b0f0495e061f21"},"num":4}
+{"_id":{"$oid":"62dbcbb7fdef5f353516bda3"},"lema":"A por el reto en tándem!","usuario_id":{"$oid":"6298d9c2f1b0f0495e061f15"},"evento_id":{"$oid":"62daf7b8220c85616477ba40"},"num":1}
+{"_id":{"$oid":"62dbcc40fdef5f353516bda5"},"usuario_id":{"$oid":"62b0c48e4e3a207b81a4840b"},"evento_id":{"$oid":"62daf7b8220c85616477ba40"},"num":2}
