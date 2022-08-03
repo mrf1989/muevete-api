@@ -9,5 +9,6 @@ export interface Esfuerzo {
   comentario?: string;
   modalidad: string;
   usuario_id: Bson.ObjectID;
+  username?: string;
   dorsal_id: Bson.ObjectID;
 }
